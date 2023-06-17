@@ -5,6 +5,9 @@
 
 Svelte components and hooks for creating VR/AR applications with [threlte (v6)](https://next.threlte.xyz/)
 
+> **Warning**
+> `threlte-xr` is early in development. There will likely be frequent breaking changes until it reaches 0.1.0. It will only work with Threlte v6.
+
 ```bash
 npm install threlte-xr
 ```
