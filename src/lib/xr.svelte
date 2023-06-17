@@ -64,9 +64,6 @@ const handleInputSourcesChange = (nativeEvent: XRInputSourceChangeEvent) => {
 
 renderer!.xr.addEventListener('sessionstart', handleSessionStart)
 renderer!.xr.addEventListener('sessionend', handleSessionEnd)
-
-$frameloop = 'never'
-
 renderer!.setAnimationLoop(animationLoop)
 
 renderer!.xr.enabled = true
@@ -74,7 +71,7 @@ renderer!.xr.enabled = true
 $: renderer!.xr.setFoveation(foveation)
 
 $: if (frameRate) {
-  try { $session?.updateTargetFrameRate?.(frameRate) } catch {}
+  try { $session?.updateTargetFrameRate(frameRate) } catch {}
 }
 
 $: renderer!.xr.setReferenceSpaceType(referenceSpace)
