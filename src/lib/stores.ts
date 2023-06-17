@@ -2,6 +2,7 @@ import * as THREE from 'three'
 import { get, writable } from 'svelte/store'
 import type { XRInteractionType, XRInteractionHandler } from './types'
 
+export const xrFrame = writable<XRFrame>()
 export const session = writable<XRSession | undefined>()
 export const referenceSpaceType = writable<XRReferenceSpaceType | undefined>()
 export const player = writable(new THREE.Group())

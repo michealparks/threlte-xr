@@ -127,7 +127,9 @@ const {
   // `XRSession` foveation. This can be configured as `foveation` on <XR>. Default is `0`
   foveation,
   // `XRSession` reference-space type. This can be configured as `referenceSpace` on <XR>. Default is `local-floor`
-  referenceSpace
+  referenceSpace,
+  // The current XRFrame
+  xrFrame,
 } = useXR()
 ```
 

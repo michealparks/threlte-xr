@@ -2,7 +2,7 @@
 
 import { T, useThrelte, createRawEventDispatcher } from '@threlte/core'
 import type { XRManagerEvent } from './types'
-import { session, referenceSpaceType, player, isPresenting, isHandTracking } from './stores'
+import { session, referenceSpaceType, player, isPresenting, isHandTracking, xrFrame } from './stores'
 import InteractionManager from './manager.svelte'
 
 /**
@@ -30,7 +30,8 @@ const { renderer, scene, camera, frameloop } = useThrelte()
 
 let cleanup: () => void = () => {}
 
-const animationLoop = () => {
+const animationLoop = (_dt: number, frame: XRFrame) => {
+  xrFrame.set(frame)
   renderer!.render(scene, camera.current)
 }
 

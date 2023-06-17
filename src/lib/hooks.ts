@@ -9,6 +9,7 @@ import {
   isHandTracking,
   player,
   session,
+  xrFrame,
 } from './stores'
 
 import type {
@@ -26,6 +27,7 @@ const stores = {
   isHandTracking,
   player,
   session,
+  xrFrame,
 }
 
 export const useXR = () => stores
