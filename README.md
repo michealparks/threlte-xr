@@ -60,7 +60,7 @@ The following adds a button to start your session and controllers inside an XR m
 
 ## XR
 
-`<XR />` is a WebXR manager that configures your scene for XR rendering and interaction. This lives within a R3F `<Canvas />`.
+`<XR />` is a WebXR manager that configures your scene for XR rendering and interaction. This lives within a Threlte `<Canvas />`.
 
 ```svelte
 <Canvas>
