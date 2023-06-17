@@ -133,17 +133,8 @@ const {
 Controllers can be added with `<Controllers />` for [motion-controllers](https://github.com/immersive-web/webxr-input-profiles/tree/main/packages/motion-controllers) and/or `<Hands />` for hand-tracking. These will activate whenever their respective input mode is enabled on-device and provide live models for a left and right `XRController`.
 
 ```jsx
-<Controllers
-  /** Optional material props to pass to controllers' ray indicators */
-  rayMaterial={{ color: 'blue' }}
-  /** Whether to hide controllers' rays on blur. Default is `false` */
-  hideRaysOnBlur={false}
-/>
-<Hands
-  // Optional custom models per hand. Default is the Oculus hand model
-  modelLeft="/model-left.glb"
-  modelRight="/model-right.glb"
-/>
+<Controllers />
+<Hands />
 ```
 
 ### useController
@@ -154,18 +145,6 @@ Controllers can be added with `<Controllers />` for [motion-controllers](https:/
 const leftController = useController('left')
 const rightController = useController('right')
 const gazeController = useController('none')
-```
-
-### XRController
-
-`XRController` is an `Object3D` that represents an [`XRInputSource`](https://developer.mozilla.org/en-US/docs/Web/API/XRInputSource) with the following properties:
-
-```jsx
-index: number
-controller: THREE.XRTargetRaySpace
-grip: THREE.XRGripSpace
-hand: THREE.XRHandSpace
-inputSource: XRInputSource
 ```
 
 ### useXREvent
