@@ -1,11 +1,12 @@
 import * as THREE from 'three'
 import { get, writable } from 'svelte/store'
+import { currentWritable } from '@threlte/core'
 import type { XRInteractionType, XRInteractionHandler } from './types'
 
-export const xrFrame = writable<XRFrame>()
+export const xrFrame = currentWritable<XRFrame>(null!)
 export const session = writable<XRSession | undefined>()
 export const referenceSpaceType = writable<XRReferenceSpaceType | undefined>()
-export const player = writable(new THREE.Group())
+export const player = currentWritable(new THREE.Group())
 export const controllers = writable<{ controller: THREE.XRTargetRaySpace, inputSource: XRInputSource }[]>([])
 export const isPresenting = writable(false)
 export const isHandTracking = writable(false)
