@@ -27,7 +27,6 @@ The following adds a button to start your session and controllers inside an XR m
   <Controllers />
   <Hands />
   <Scene />
-  </XR>
 </Canvas>
 ```
 
