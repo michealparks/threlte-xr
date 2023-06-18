@@ -16,8 +16,8 @@ npm install threlte-xr
 
 - [x] XR Manager
 - [x] Controller and Hand features
+  - [x] Events
   - [ ] Custom hand models and children
-  - [ ] Events
 - [ ] Teleporting
 - [ ] Smooth movement
 - [ ] Interactive objects
@@ -171,6 +171,12 @@ Controllers can be added with `<Controllers />` for [motion-controllers](https:/
   modelRight={undefined | THREE.Object3D}
   on:connect={(event) => {}}
   on:disconnect={(event) => {}}
+  on:select={(event) => {}}
+  on:selectstart={(event) => {}}
+  on:selectend={(event) => {}}
+  on:squeeze={(event) => {}}
+  on:squeezeend={(event) => {}}
+  on:squeezestart={(event) => {}}
 />
 
 <!-- Can accept children -->
