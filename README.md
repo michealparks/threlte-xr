@@ -21,6 +21,7 @@ npm install threlte-xr
 - [ ] Teleporting
 - [ ] Smooth movement
 - [ ] Interactive objects
+- [ ] Works smoothly with @threlte/rapier
 
 ## Getting started
 
