@@ -2,12 +2,13 @@
 
 import { Canvas } from '@threlte/core'
 import { VRButton } from '$lib'
-import Scene from './scene.svelte'
 
 </script>
 
-<Canvas>
-  <Scene />
+<Canvas
+  useLegacyLights={false}
+>
+  <slot />
 </Canvas>
 
 <VRButton />

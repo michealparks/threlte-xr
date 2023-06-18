@@ -16,22 +16,29 @@ npm install threlte-xr
 
 The following adds a button to start your session and controllers inside an XR manager to prepare your scene for WebXR rendering and interaction.
 
-```html
+```svelte
 <script>
-  import { VRButton, ARButton, XR, Controllers, Hands } from 'threlte-xr'
+  import { VRButton, ARButton } from 'threlte-xr'
   import { Canvas } from '@threlte/core'
   import Scene from './scene.svelte'
 </script>
 
-<VRButton />
-
 <Canvas>
-  <XR />
-  <Controllers />
-  <Hands />
   <Scene />
 </Canvas>
+
+<VRButton />
 ```
+
+Then, in `scene.svelte`:
+```svelte
+<script>
+  import { XR, Controllers, Hands } from 'threlte-xr'
+</script>
+
+<XR />
+<Controllers />
+<Hands />
 
 ## XRButton
 

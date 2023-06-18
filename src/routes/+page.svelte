@@ -1,7 +1,8 @@
 <script lang='ts'>
 
 const demos = [
-  ['Hands', '/hands']
+  ['Hands', '/hands'],
+  ['Events', '/events'],
 ] as const
 
 </script>
@@ -9,6 +10,6 @@ const demos = [
 <main class='p-4'>
   <h1 class='font-bold text-xl'>Demos</h1>
   {#each demos as [text, href] (href)}
-    <a {href} class='hover:underline'>{text}</a>
+    <a {href} class='block hover:underline'>{text}</a>
   {/each}
 </main>

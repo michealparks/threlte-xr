@@ -29,7 +29,7 @@ const grip = renderer!.xr.getControllerGrip(index)
 
 export let model: THREE.Object3D | undefined = controllerModelFactory.createControllerModel(grip)
 
-const handleConnect = (event: THREE.Event) => {
+const handleConnect = ( event: THREE.Event) => {
   $controllers[index] = { controller, inputSource: event.data }
   controller.visible = grip.visible = true
   dispatch('connect', event)
