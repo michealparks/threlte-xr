@@ -208,16 +208,24 @@ const gazeController = useController('none')
 
 To handle controller events that are not bound to any object in the scene you can use `useXREvent` hook. This is a low-level abstraction that subscribes directly into the native XRInputSource (see [`XRInputSourceEvent`](https://developer.mozilla.org/en-US/docs/Web/API/XRInputSourceEvent#event_types)).
 
-```jsx
+```ts
 useXREvent('squeeze', (event: XRControllerEvent) => {})
 ```
 
 It supports an optional third parameter with options for filtering by handedness.
 
-```jsx
+```ts
 useXREvent('squeeze', (event: XRControllerEvent) => {}, {
   handedness: 'left' | 'right' | 'none'
 })
+```
+
+It returns a cleanup function to remove the event listener.
+
+```ts
+const cleanup = useXREvent('select', (event: XRControllerEvent) => {})
+
+cleanup()
 ```
 
 ### Custom XRButton
