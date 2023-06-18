@@ -41,6 +41,19 @@ Then, in `scene.svelte`:
 <Hands />
 ```
 
+If you want the hands, controllers, or other objects to only be added to the `THREE.Scene` when the XR session starts, make them children of the `<XR>` component:
+
+```svelte
+<script>
+  import { XR, Controllers, Hands } from 'threlte-xr'
+</script>
+
+<XR>
+  <Controllers />
+  <Hands />
+</XR>
+```
+
 ## XRButton
 
 `<XRButton />` is an HTML `<button />` that can be used to init and display info about your WebXR session. This is aliased by `ARButton` and `VRButton` with sensible session defaults.

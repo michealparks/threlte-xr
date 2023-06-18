@@ -3,6 +3,7 @@
 const demos = [
   ['Hands', '/hands'],
   ['Events', '/events'],
+  ['Custom hand / controller models', '/models']
 ] as const
 
 </script>

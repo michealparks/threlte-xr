@@ -1,6 +1,7 @@
 <script lang='ts'>
 
-import { T, useThrelte, createRawEventDispatcher } from '@threlte/core'
+import { onMount, onDestroy } from 'svelte';
+import { T, useThrelte, createRawEventDispatcher, useRender } from '@threlte/core'
 import type { XRManagerEvent } from './types'
 import { session, referenceSpaceType, player, isPresenting, isHandTracking, xrFrame } from './stores'
 import InteractionManager from './manager.svelte'
@@ -26,7 +27,7 @@ export let frameRate: number | undefined = undefined
 export let referenceSpace: XRReferenceSpaceType = 'local-floor'
 
 const dispatch = createRawEventDispatcher()
-const { renderer, scene, camera } = useThrelte()
+const { renderer, scene, camera, frameloop } = useThrelte()
 
 let cleanup: () => void = () => {}
 
@@ -62,11 +63,10 @@ const handleInputSourcesChange = (nativeEvent: XRInputSourceChangeEvent) => {
   dispatch('inputsourceschange', { ...nativeEvent, target: $session! })
 }
 
+renderer!.xr.enabled = true
 renderer!.xr.addEventListener('sessionstart', handleSessionStart)
 renderer!.xr.addEventListener('sessionend', handleSessionEnd)
 renderer!.setAnimationLoop(animationLoop)
-
-renderer!.xr.enabled = true
 
 $: renderer!.xr.setFoveation(foveation)
 
@@ -99,6 +99,13 @@ $: {
   }
 }
 
+onDestroy(() => {
+  renderer!.xr.enabled = false
+  renderer!.xr.removeEventListener('sessionstart', handleSessionStart)
+  renderer!.xr.removeEventListener('sessionend', handleSessionEnd)
+  renderer!.setAnimationLoop(null)
+})
+
 </script>
 
 <!--
@@ -123,3 +130,7 @@ and interaction. This lives within a Threlte `<Canvas />`.
 <T name='Player' is={$player}>
   <T is={camera.current} />
 </T>
+
+{#if $isPresenting}
+  <slot />
+{/if}

@@ -12,7 +12,7 @@ const handModelFactory = new XRHandModelFactory()
 
 export let index: number
 
-export let profile: 'mesh' | 'spheres' | 'boxes' = 'mesh'
+export let profile: 'mesh' | 'spheres' | 'boxes' | 'none' = 'mesh'
 
 const { renderer } = useThrelte()
 const dispatch = createRawEventDispatcher()
@@ -38,6 +38,9 @@ onDestroy(() => {
 
 </script>
 
-<T is={hand}>
-  <T is={model} />
+<T is={hand} name='XR Hand {index}'>
+  {#if profile !== 'none'}
+    <T is={model} name='XR Hand Model {index}' />
+  {/if}
+  <slot />
 </T>

@@ -56,12 +56,12 @@ onDestroy(() => {
 
 </script>
 
-<T is={grip}>
-  <T is={model} />
+<T is={grip} name='XR Controller Grip {index}'>
+  <T is={model} name='XR Controller Grip Model {index}' />
   <slot />
 </T>
 
-<T is={controller}>
+<T is={controller} name='XR Controller {index}'>
   {#if ray}
     <!-- <Ray
       visible={!$isHandTracking}
