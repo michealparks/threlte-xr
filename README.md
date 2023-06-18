@@ -156,6 +156,8 @@ Controllers can be added with `<Controllers />` for [motion-controllers](https:/
 
 <Hands
   profile={'mesh' | 'spheres' | 'boxes'}
+  on:connect={(event) => ...}
+  on:disconnect={(event) => ...}
 />
 ```
 
