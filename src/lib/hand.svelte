@@ -21,7 +21,8 @@ const hand = renderer!.xr.getHand(index)
 const model = handModelFactory.createHandModel(hand, profile)
 
 const handleConnectionUpdate = (event: THREE.Event) => {
-  hand.visible = event.type === 'connected'
+  const connected = event.type === 'connected'
+  hand.visible = connected
   dispatch(event.type, event)
 }
 

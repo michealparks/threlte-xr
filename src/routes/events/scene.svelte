@@ -23,7 +23,8 @@ camera.current.lookAt(0, 1.75, 1)
 />
 
 <Hands
-  
+  on:connect={(event) => console.log('connect', event)}
+  on:disconnect={(event) => console.log('disconnect', event)}
 />
 
 <T.Mesh rotation={[-Math.PI / 2, 0, 0]}>

@@ -26,7 +26,7 @@ export let frameRate: number | undefined = undefined
 export let referenceSpace: XRReferenceSpaceType = 'local-floor'
 
 const dispatch = createRawEventDispatcher()
-const { renderer, scene, camera, frameloop } = useThrelte()
+const { renderer, scene, camera } = useThrelte()
 
 let cleanup: () => void = () => {}
 

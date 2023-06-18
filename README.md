@@ -145,6 +145,8 @@ Controllers can be added with `<Controllers />` for [motion-controllers](https:/
 <Controllers
   modelLeft={undefined | 'none' | THREE.Object3D}
   modelRight={undefined | 'none' | THREE.Object3D}
+  on:connect={(event) => ...}
+  on:disconnect={(event) => ...}
 />
 
 <!-- Can accept children -->
