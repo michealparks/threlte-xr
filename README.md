@@ -12,6 +12,13 @@ Svelte components and hooks for creating VR/AR applications with [threlte (v6)](
 npm install threlte-xr
 ```
 
+## Roadmap
+- ✅ XR Manager
+- 🔄 Controllers and Hands
+- [] Teleporting
+- [] Smooth movement
+- [] Interactive objects
+
 ## Getting started
 
 The following adds a button to start your session and controllers inside an XR manager to prepare your scene for WebXR rendering and interaction.
@@ -165,11 +172,11 @@ Controllers can be added with `<Controllers />` for [motion-controllers](https:/
 
 <!-- Can accept children -->
 <Controllers>
-  <T is={$gltf.scene} />
+  <T slot='left' is={$gltf.scene} />
 </Controllers>
 
 <Hands
-  profile={'mesh' | 'spheres' | 'boxes'}
+  profile={'mesh' | 'spheres' | 'boxes' | 'none'}
   on:connect={(event) => {}}
   on:disconnect={(event) => {}}
 />
