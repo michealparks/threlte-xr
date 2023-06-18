@@ -70,7 +70,7 @@ renderer!.xr.enabled = true
 
 $: renderer!.xr.setFoveation(foveation)
 
-$: if (frameRate) {
+$: if (frameRate !== undefined) {
   try { $session?.updateTargetFrameRate(frameRate) } catch {}
 }
 
@@ -106,5 +106,3 @@ $: {
 <T name='Player' is={$player}>
   <T is={camera.current} />
 </T>
-
-<slot />

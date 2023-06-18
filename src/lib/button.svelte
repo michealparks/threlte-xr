@@ -12,11 +12,11 @@ export let mode: XRSessionMode
  * @see https://immersive-web.github.io/webxr/#feature-dependencies
  */
 export let sessionInit: XRSessionInit & { domOverlay?: { root: HTMLElement } | undefined } | undefined
+
 /** Whether this button should only enter an `XRSession`. Default is `false` */
-
 export let enterOnly: boolean = false
-/** Whether this button should only exit an `XRSession`. Default is `false` */
 
+/** Whether this button should only exit an `XRSession`. Default is `false` */
 export let exitOnly: boolean = false
 
 const dispatch = createEventDispatcher()

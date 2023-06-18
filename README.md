@@ -6,7 +6,7 @@
 Svelte components and hooks for creating VR/AR applications with [threlte (v6)](https://next.threlte.xyz/), inspired by the design of [react-xr](https://github.com/pmndrs/react-xr).
 
 > **Warning**
-> `threlte-xr` is early in development. There will likely be frequent breaking changes until it reaches 0.1.0. It will only work with Threlte v6.
+> `threlte-xr` is early in development. There will likely be frequent breaking changes until it reaches 0.1.0. It will only work with Threlte v6 onward.
 
 ```bash
 npm install threlte-xr
@@ -37,25 +37,24 @@ The following adds a button to start your session and controllers inside an XR m
 
 `<XRButton />` is an HTML `<button />` that can be used to init and display info about your WebXR session. This is aliased by `ARButton` and `VRButton` with sensible session defaults.
 
-```jsx
+```svelte
+<!--
+  mode - The type of `XRSession` to create
+  sessionInit - `XRSession` configuration options, see https://immersive-web.github.io/webxr/#feature-dependencies
+  enterOnly - Whether this button should only enter an `XRSession`. Default is `false`
+  exitOnly - Whether this button should only exit an `XRSession`. Default is `false`
+
+  on:error - Dispatched if XR initialization fails.
+  on:click - Dispatched if a click occurs.
+-->
 <XRButton
-  /* The type of `XRSession` to create */
   mode={'immersive-ar' | 'immersive-vr' | 'inline'}
-  /**
-   * `XRSession` configuration options
-   * @see https://immersive-web.github.io/webxr/#feature-dependencies
-   */
   sessionInit={{ optionalFeatures: ['local-floor', 'bounded-floor', 'hand-tracking', 'layers'] }}
-  /** Whether this button should only enter an `XRSession`. Default is `false` */
   enterOnly={false}
-  /** Whether this button should only exit an `XRSession`. Default is `false` */
   exitOnly={false}
-  /** This callback gets fired if XR initialization fails. */
-  onError={(error) => ...}
->
-  {/* Can accept regular DOM children and has an optional callback with the XR button status (unsupported, exited, entered) */}
-  {(status) => `WebXR ${status}`}
-</XRButton>
+  on:error={(event) => ...}
+  on:click={(event) => ...}
+/>
 ```
 
 ## XR
@@ -65,13 +64,12 @@ The following adds a button to start your session and controllers inside an XR m
 ```svelte
 <Canvas>
   <!--
-    PROPS:
-    foveation:
+    foveation -
     Enables foveated rendering. Default is `0`
     0 = no foveation, full resolution
     1 = maximum foveation, the edges render at lower resolution
 
-    frameRate:
+    frameRate -
     The target framerate for the XRSystem. Smaller rates give more CPU headroom at the cost of responsiveness.
     Recommended values are `72`, `90`, or `120`. Default is unset and left to the device.
     @note If your experience cannot effectively reach the target framerate, it will be subject to frame reprojection
@@ -79,26 +77,25 @@ The following adds a button to start your session and controllers inside an XR m
     headroom based on your experience.
     @see https://developer.mozilla.org/en-US/docs/Web/API/WebXR_Device_API/Rendering#refresh_rate_and_frame_rate
 
-    referenceSpace:
+    referenceSpace -
     Type of WebXR reference space to use. Default is `local-floor`
 
-    EVENTS:
-    sessionstart:
-    Called as an XRSession is requested
+    on:sessionstart -
+    Dispatched as an XRSession is requested
 
-    sessionend:
-    Called after an XRSession is terminated
+    on:sessionend -
+    Dispatched after an XRSession is terminated
 
-    visibilitychange:
-    Called when an XRSession is hidden or unfocused
+    on:visibilitychange -
+    Dispatched when an XRSession is hidden or unfocused
 
-    inputsourceschange:
-    Called when available inputsources change
+    inputsourceschange -
+    Dispatched when available inputsources change
   -->
   <XR
     foveation={0}
     frameRate={90}
-    referenceSpace="local-floor"
+    referenceSpace='local-floor'
     on:sessionstart={(event: XREvent<XRManagerEvent>) => {}}
     on:sessionend={(event: XREvent<XRManagerEvent>) => {}}
     on:visibilitychange={(event: XREvent<XRSessionEvent>) => {}}
@@ -110,7 +107,7 @@ The following adds a button to start your session and controllers inside an XR m
 
 ### useXR
 
-This hook gives you access to the current `XRState` configured by `<XR />`.
+This hook gives you access to the current state configured by `<XR />`.
 
 ```jsx
 const {
@@ -135,11 +132,22 @@ const {
 
 ## Controllers
 
-Controllers can be added with `<Controllers />` for [motion-controllers](https://github.com/immersive-web/webxr-input-profiles/tree/main/packages/motion-controllers) and/or `<Hands />` for hand-tracking. These will activate whenever their respective input mode is enabled on-device and provide live models for a left and right `XRController`.
+Controllers can be added with `<Controllers />` for [motion-controllers](https://github.com/immersive-web/webxr-input-profiles/tree/main/packages/motion-controllers) and/or `<Hands />` for hand-tracking. These will activate whenever their respective input mode is enabled on-device and provide default models for a left and right `XRController`.
 
-```jsx
-<Controllers />
-<Hands />
+```svelte
+<Controllers
+  modelLeft={undefined | 'none' | THREE.Object3D}
+  modelRight={undefined | 'none' | THREE.Object3D}
+/>
+
+<!-- Can accept children -->
+<Controllers>
+  <T is={$gltf.scene} />
+</Controllers>
+
+<Hands
+  profile={'mesh' | 'spheres' | 'boxes'}
+/>
 ```
 
 ### useController
