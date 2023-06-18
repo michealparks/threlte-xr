@@ -182,6 +182,8 @@ Controllers can be added with `<Controllers />` for [motion-controllers](https:/
   profile={'mesh' | 'spheres' | 'boxes' | 'none'}
   on:connect={(event) => {}}
   on:disconnect={(event) => {}}
+  on:pinchstart={(event) => {}}
+  on:pinchend={(event) => {}}
 />
 ```
 

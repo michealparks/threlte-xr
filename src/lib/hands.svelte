@@ -14,6 +14,8 @@ const dispatch = createRawEventDispatcher()
   {profile}
   on:connect={(event) => dispatch('connect', event)}
   on:disconnect={(event) => dispatch('disconnect', event)}
+  on:pinchstart={(event) => dispatch('pinchstart', event)}
+  on:pinchend={(event) => dispatch('pinchend', event)}
 >
   <slot name='left' />
 </Hand>
@@ -23,6 +25,8 @@ const dispatch = createRawEventDispatcher()
   {profile}
   on:connect={(event) => dispatch('connect', event)}
   on:disconnect={(event) => dispatch('disconnect', event)}
+  on:pinchstart={(event) => dispatch('pinchstart', event)}
+  on:pinchend={(event) => dispatch('pinchend', event)}
 >
   <slot name='right' />
 </Hand>

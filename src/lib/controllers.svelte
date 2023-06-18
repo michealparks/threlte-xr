@@ -13,8 +13,8 @@ const dispatch = createRawEventDispatcher()
 <Controller
   model={modelLeft}
   index={0}
-  on:connect={(event) => dispatch('connect', { index: 0, event })}
-  on:disconnect={(event) => dispatch('disconnect', { index: 0, event })}
+  on:connect={(event) => dispatch('connect', event)}
+  on:disconnect={(event) => dispatch('disconnect', event)}
 >
   <slot name='left' />
 </Controller>
@@ -22,8 +22,8 @@ const dispatch = createRawEventDispatcher()
 <Controller
   model={modelRight}
   index={1}
-  on:connect={(event) => dispatch('connect', { index: 1, event })}
-  on:disconnect={(event) => dispatch('disconnect', { index: 1, event })}
+  on:connect={(event) => dispatch('connect', event)}
+  on:disconnect={(event) => dispatch('disconnect', event)}
 >
   <slot name='right' />
 </Controller>

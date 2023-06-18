@@ -26,14 +26,22 @@ const handleConnectionUpdate = (event: THREE.Event) => {
   dispatch(event.type, event)
 }
 
+const handlePinchEvent = (event) => {
+  dispatch(event.type, event)
+}
+
 onMount(() => {
   hand.addEventListener('connected', handleConnectionUpdate)
   hand.addEventListener('disconnected', handleConnectionUpdate)
+  hand.addEventListener('pinchstart', handlePinchEvent)
+  hand.addEventListener('pinchend', handlePinchEvent)
 })
 
 onDestroy(() => {
   hand.removeEventListener('connected', handleConnectionUpdate)
   hand.removeEventListener('disconnected', handleConnectionUpdate)
+  hand.removeEventListener('pinchstart', handlePinchEvent)
+  hand.removeEventListener('pinch', handlePinchEvent)
 })
 
 </script>
