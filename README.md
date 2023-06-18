@@ -14,8 +14,8 @@ npm install threlte-xr
 
 ## Roadmap
 
-- ✅ XR Manager
-- 🔄 Controllers and Hands
+- [✅] XR Manager
+- [🔄] Controllers and Hands
 - [ ] Teleporting
 - [ ] Smooth movement
 - [ ] Interactive objects
