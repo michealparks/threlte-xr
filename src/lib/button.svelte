@@ -38,6 +38,25 @@ $: modeText = { 'immersive-vr': 'VR', 'immersive-ar': 'AR', inline: 'inline' }[m
 
 </script>
 
+<!--
+@component
+`<XRButton />` is an HTML `<button />` that can be used to init and
+display info about your WebXR session. This is aliased by `ARButton` and
+`VRButton` with sensible session defaults.
+
+```svelte
+  <XRButton
+    mode={'immersive-ar' | 'immersive-vr' | 'inline'}
+    sessionInit={{
+      optionalFeatures: ['local-floor', 'bounded-floor', 'hand-tracking', 'layers']
+    }}
+    enterOnly={false}
+    exitOnly={false}
+    on:error={(event) => {}}
+    on:click={(event) => {}}
+  />
+```
+-->
 {#await getSupportState(mode) then state}
   <button {...$$props} on:click={() => handleButtonClick(state)}>
     {#if state === 'unsupported'}

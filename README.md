@@ -39,6 +39,7 @@ Then, in `scene.svelte`:
 <XR />
 <Controllers />
 <Hands />
+```
 
 ## XRButton
 

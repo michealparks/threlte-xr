@@ -10,4 +10,7 @@ import Scene from './scene.svelte'
   <Scene />
 </Canvas>
 
-<VRButton />
+<VRButton
+  on:click={(event) => console.log('vr button click', event)}
+  on:error={(event) => console.log('vr button error', event)}
+/>
