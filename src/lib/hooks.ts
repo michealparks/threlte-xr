@@ -30,6 +30,9 @@ const stores = {
   xrFrame,
 }
 
+/**
+ * This hook gives you access to the current state configured by `<XR />`.
+ */
 export const useXR = () => stores
 
 export const useController = (handedness: XRHandedness) => {

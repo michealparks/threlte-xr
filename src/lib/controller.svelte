@@ -22,14 +22,18 @@ export const rayMaterial: THREE.MeshBasicMaterial | undefined = undefined
 export const hideRaysOnBlur: boolean = false
 
 const { renderer } = useThrelte()
-const dispatch = createRawEventDispatcher()
+
+const dispatch = createRawEventDispatcher<{
+  connect: THREE.Event
+  disconnect: THREE.Event
+}>()
 
 const controller = renderer!.xr.getController(index)
 const grip = renderer!.xr.getControllerGrip(index)
 
 export let model: THREE.Object3D | undefined = controllerModelFactory.createControllerModel(grip)
 
-const handleConnect = ( event: THREE.Event) => {
+const handleConnect = (event: THREE.Event) => {
   $controllers[index] = { controller, inputSource: event.data }
   controller.visible = grip.visible = true
   dispatch('connect', event)

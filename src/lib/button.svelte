@@ -19,9 +19,12 @@ export let enterOnly: boolean = false
 /** Whether this button should only exit an `XRSession`. Default is `false` */
 export let exitOnly: boolean = false
 
-const dispatch = createEventDispatcher()
+const dispatch = createEventDispatcher<{
+  click: { state: 'unsupported' | 'insecure' | 'blocked' | 'supported' }
+  error: unknown
+}>()
 
-const handleButtonClick = async (state: string) => {
+const handleButtonClick = async (state: 'unsupported' | 'insecure' | 'blocked' | 'supported') => {
   dispatch('click', { state })
 
   if (state !== 'supported') return

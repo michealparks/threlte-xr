@@ -60,8 +60,8 @@ Then, in `scene.svelte`:
   sessionInit={{ optionalFeatures: ['local-floor', 'bounded-floor', 'hand-tracking', 'layers'] }}
   enterOnly={false}
   exitOnly={false}
-  on:error={(event) => ...}
-  on:click={(event) => ...}
+  on:error={(event) => {}}
+  on:click={(event) => {}}
 />
 ```
 
@@ -144,10 +144,10 @@ Controllers can be added with `<Controllers />` for [motion-controllers](https:/
 
 ```svelte
 <Controllers
-  modelLeft={undefined | 'none' | THREE.Object3D}
-  modelRight={undefined | 'none' | THREE.Object3D}
-  on:connect={(event) => ...}
-  on:disconnect={(event) => ...}
+  modelLeft={undefined | THREE.Object3D}
+  modelRight={undefined | THREE.Object3D}
+  on:connect={(event) => {}}
+  on:disconnect={(event) => {}}
 />
 
 <!-- Can accept children -->
@@ -157,8 +157,8 @@ Controllers can be added with `<Controllers />` for [motion-controllers](https:/
 
 <Hands
   profile={'mesh' | 'spheres' | 'boxes'}
-  on:connect={(event) => ...}
-  on:disconnect={(event) => ...}
+  on:connect={(event) => {}}
+  on:disconnect={(event) => {}}
 />
 ```
 
@@ -177,13 +177,15 @@ const gazeController = useController('none')
 To handle controller events that are not bound to any object in the scene you can use `useXREvent` hook. This is a low-level abstraction that subscribes directly into the native XRInputSource (see [`XRInputSourceEvent`](https://developer.mozilla.org/en-US/docs/Web/API/XRInputSourceEvent#event_types)).
 
 ```jsx
-useXREvent('squeeze', (event: XRControllerEvent) => ...)
+useXREvent('squeeze', (event: XRControllerEvent) => {})
 ```
 
 It supports an optional third parameter with options for filtering by handedness.
 
 ```jsx
-useXREvent('squeeze', (event: XRControllerEvent) => ..., { handedness: 'left' | 'right' | 'none' })
+useXREvent('squeeze', (event: XRControllerEvent) => {}, {
+  handedness: 'left' | 'right' | 'none'
+})
 ```
 
 ### Custom XRButton

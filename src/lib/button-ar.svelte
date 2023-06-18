@@ -3,7 +3,10 @@
 import { createEventDispatcher } from 'svelte'
 import XRButton from './button.svelte'
 
-const dispatch = createEventDispatcher()
+const dispatch = createEventDispatcher<{
+  click: { state: 'unsupported' | 'insecure' | 'blocked' | 'supported' }
+  error: unknown
+}>()
 
 </script>
 

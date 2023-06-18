@@ -101,6 +101,23 @@ $: {
 
 </script>
 
+<!--
+@component
+`<XR />` is a WebXR manager that configures your scene for XR rendering
+and interaction. This lives within a Threlte `<Canvas />`.
+
+```svelte
+  <XR
+    foveation={0}
+    frameRate={90}
+    referenceSpace='local-floor'
+    on:sessionstart={(event: XREvent<XRManagerEvent>) => {}}
+    on:sessionend={(event: XREvent<XRManagerEvent>) => {}}
+    on:visibilitychange={(event: XREvent<XRSessionEvent>) => {}}
+    on:inputsourceschange={(event: XREvent<XRSessionEvent>) => {}}
+  />
+```
+-->
 <InteractionManager />
 
 <T name='Player' is={$player}>
