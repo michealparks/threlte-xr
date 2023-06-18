@@ -1,5 +1,6 @@
 import type * as THREE from 'three'
 import { currentWritable } from '@threlte/core'
+import { on, off } from './events'
 
 import {
   addInteraction,
@@ -46,23 +47,17 @@ export const useController = (handedness: XRHandedness) => {
 }
 
 export const useXREvent = (event: XRControllerEventType, handler: XREventHandler<XRControllerEvent>, { handedness }: XREventOptions = {}) => {
-  let listeners: ((() => void) | undefined)[] = []
+  const listener = (event: any) => {
+    if (handedness && event.data.handedness !== handedness) {
+      return
+    }
 
-  const unsubscribe = controllers.subscribe((value) => {
-    listeners.forEach((cleanup) => cleanup?.())
-    listeners = value.map((target) => {
-      if (handedness && target.inputSource.handedness !== handedness) return
-  
-      const listener = (nativeEvent: XRControllerEvent) => handler({ nativeEvent, target })
-      target.controller.addEventListener(event, listener)
-      return () => target.controller.removeEventListener(event, listener)
-    })
-  })
-
-  return () => {
-    unsubscribe()
-    listeners.forEach((cleanup) => cleanup?.())
+    handler(event)
   }
+
+  on(event, listener)
+
+  return () => off(event, listener)
 }
 
 export const useInteraction = (target: THREE.Object3D, type: XRInteractionType, handler: XRInteractionHandler) => {

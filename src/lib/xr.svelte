@@ -4,7 +4,6 @@ import { onMount, onDestroy } from 'svelte';
 import { T, useThrelte, createRawEventDispatcher, useRender } from '@threlte/core'
 import type { XRManagerEvent } from './types'
 import { session, referenceSpaceType, player, isPresenting, isHandTracking, xrFrame } from './stores'
-import InteractionManager from './manager.svelte'
 
 /**
  * Enables foveated rendering. `Default is `0`
@@ -125,8 +124,6 @@ and interaction. This lives within a Threlte `<Canvas />`.
   />
 ```
 -->
-<InteractionManager />
-
 <T name='Player' is={$player}>
   <T is={camera.current} />
 </T>

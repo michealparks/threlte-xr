@@ -4,6 +4,7 @@ import { controllers } from './stores';
 import { onMount, onDestroy } from 'svelte'
 import { T, useThrelte, createRawEventDispatcher } from '@threlte/core'
 import { XRControllerModelFactory } from 'three/examples/jsm/webxr/XRControllerModelFactory'
+import { fire } from './events'
 
 const controllerModelFactory = new XRControllerModelFactory()
 
@@ -44,14 +45,34 @@ const handleDisconnect = (event: THREE.Event) => {
   dispatch('disconnect', event)
 }
 
+const handleXrEvent = (event: Event & { type: typeof xrEvents[number] } & { target: XRTargetRaySpace }) => {
+  fire(event.type, event)
+  dispatch(event.type, event)
+}
+
+const xrEvents = [
+  'select',
+  'selectstart',
+  'selectend',
+  'squeeze',
+  'squeezeend',
+  'squeezestart'
+] as const
+
 onMount(() => {
   controller.addEventListener('connected', handleConnect)
   controller.addEventListener('disconnected', handleDisconnect)
+  for (const event of xrEvents) {
+    controller.addEventListener(event, handleXrEvent)
+  }
 })
 
 onDestroy(() => {
   controller.removeEventListener('connected', handleConnect)
   controller.removeEventListener('disconnected', handleDisconnect)
+  for (const event of xrEvents) {
+    controller.removeEventListener(event, handleXrEvent)
+  }
 })
 
 </script>

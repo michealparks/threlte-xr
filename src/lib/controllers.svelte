@@ -8,13 +8,21 @@ export let modelRight: THREE.Object3D | undefined = undefined
 
 const dispatch = createRawEventDispatcher()
 
+const handleXrEvent = (event) => dispatch(event.type, event)
+
 </script>
 
 <Controller
   model={modelLeft}
   index={0}
-  on:connect={(event) => dispatch('connect', event)}
-  on:disconnect={(event) => dispatch('disconnect', event)}
+  on:connect={handleXrEvent}
+  on:disconnect={handleXrEvent}
+  on:select={handleXrEvent}
+  on:selectstart={handleXrEvent}
+  on:selectend={handleXrEvent}
+  on:squeeze={handleXrEvent}
+  on:squeezeend={handleXrEvent}
+  on:squeezestart={handleXrEvent}
 >
   <slot name='left' />
 </Controller>
@@ -22,8 +30,14 @@ const dispatch = createRawEventDispatcher()
 <Controller
   model={modelRight}
   index={1}
-  on:connect={(event) => dispatch('connect', event)}
-  on:disconnect={(event) => dispatch('disconnect', event)}
+  on:connect={handleXrEvent}
+  on:disconnect={handleXrEvent}
+  on:select={handleXrEvent}
+  on:selectstart={handleXrEvent}
+  on:selectend={handleXrEvent}
+  on:squeeze={handleXrEvent}
+  on:squeezeend={handleXrEvent}
+  on:squeezestart={handleXrEvent}
 >
   <slot name='right' />
 </Controller>
