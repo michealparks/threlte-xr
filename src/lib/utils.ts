@@ -54,14 +54,14 @@ export const toggleSession = async (
   enterOnly: boolean,
   exitOnly: boolean,
 ) => {
-  const sess = get(session)
+  const hasSession = get(session) !== undefined
 
   // Bail if certain toggle way is disabled
-  if (sess && enterOnly) return
-  if (!sess && exitOnly) return
+  if (hasSession && enterOnly) return
+  if (!hasSession && exitOnly) return
 
   // Exit/enter session
-  if (sess) {
+  if (hasSession) {
     return await stopSession()
   } else {
     return await startSession(sessionMode, sessionInit)
@@ -72,27 +72,27 @@ export const startSession = async (
   sessionMode: XRSessionMode,
   sessionInit: XRSessionInit & { domOverlay?: { root: HTMLElement } | undefined } | undefined,
 ): Promise<XRSession | undefined> => {
-  let sess = get(session)
+  let currentSession = get(session)
 
-  if (sess) {
-    console.warn('@react-three/xr: session already started, please stop it first')
-    return
+  if (currentSession !== undefined) {
+    console.warn('threlte-xr: session already started.')
+    return currentSession
   }
 
   const options = getSessionOptions(get(referenceSpaceType), sessionInit)
-  sess = await navigator.xr!.requestSession(sessionMode, options)
-  session.set(sess)
-  return sess
+  const nextSession = await navigator.xr!.requestSession(sessionMode, options)
+  session.set(nextSession)
+  return nextSession
 }
 
 export const stopSession = async () => {
-  const sess = get(session)
+  const currentSession = get(session)
 
-  if (!sess) {
-    console.warn('@react-three/xr: no session to stop, please start it first')
+  if (currentSession === undefined) {
+    console.warn('threlte-xr: no session to stop.')
     return
   }
 
-  await sess.end()
+  await currentSession.end()
   session.set(undefined)
 }

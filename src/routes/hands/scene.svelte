@@ -13,15 +13,14 @@ let boxes: THREE.Object3D[] = []
 
 const handlePinchStart = (event) => {
   const controller = event.target
-  const size = 0.05;
+  const size = 0.05
   const geometry = new THREE.BoxGeometry(size, size, size)
   const material = new THREE.MeshStandardMaterial({ color: Math.random() * 0xffffff })
   const spawn = new THREE.Mesh(geometry, material)
-  spawn.geometry.computeBoundingSphere()
 
-  const indexTip = controller.joints[ 'index-finger-tip' ]
-  spawn.position.copy( indexTip.position )
-  spawn.quaternion.copy( indexTip.quaternion )
+  const indexTip = controller.joints['index-finger-tip']
+  spawn.position.copy(indexTip.position)
+  spawn.quaternion.copy(indexTip.quaternion)
   boxes.push(spawn)
   boxes = boxes
 }

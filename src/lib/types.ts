@@ -1,9 +1,3 @@
-export type XRMode = 'AR' | 'VR' | 'inline'
-
-export interface GlobalSessionState {
-  session: XRSession | null
-  referenceSpaceType: XRReferenceSpaceType | null
-}
 
 export type XRManagerEventType = 'sessionstart' | 'sessionend'
 
