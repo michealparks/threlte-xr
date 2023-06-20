@@ -5,6 +5,7 @@ const demos = [
   ['Events', '/events'],
   ['Custom controller models', '/models'],
   ['Teleporting', '/teleport'],
+  ['Immersive AR', '/ar'],
 ] as const
 
 </script>

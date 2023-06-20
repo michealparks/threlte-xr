@@ -34,18 +34,19 @@ const grip = renderer!.xr.getControllerGrip(index)
 
 export let model: THREE.Object3D | undefined = controllerModelFactory.createControllerModel(grip)
 
-const handleConnect = (event: THREE.Event) => {
+const handleConnect = (event: Event & { type: 'connect' } & { target: THREE.XRTargetRaySpace }) => {
   $controllers[index] = { controller, inputSource: event.data }
   controller.visible = grip.visible = true
   dispatch('connect', event)
 }
 
-const handleDisconnect = (event: THREE.Event) => {
+const handleDisconnect = (event: Event & { type: 'disconnect' } & { target: THREE.XRTargetRaySpace }) => {
+  controllers.update((value) => value.filter(({ target }) => target !== event.target))
   controller.visible = grip.visible = false
   dispatch('disconnect', event)
 }
 
-const handleXrEvent = (event: Event & { type: typeof xrEvents[number] } & { target: XRTargetRaySpace }) => {
+const handleXrEvent = (event: Event & { type: typeof xrEvents[number] } & { target: THREE.XRTargetRaySpace }) => {
   fire(event.type, event)
   dispatch(event.type, event)
 }

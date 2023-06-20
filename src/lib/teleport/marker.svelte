@@ -1,0 +1,37 @@
+<script lang='ts'>
+
+import * as THREE from 'three'
+import { T } from '@threlte/core'
+
+const fragmentShader = `
+uniform float time;
+varying vec2 vUv;
+void main(){
+  float sinx = sin(time) / 8. + 0.3;
+  float strength = 1.0 - step(0.01, abs(distance(vUv, vec2(0.5)) - sinx));
+  gl_FragColor = vec4(strength);
+}`
+
+const vertexShader = `
+varying vec2 vUv;
+void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`
+
+</script>
+
+<T.Mesh
+  name='Teleport Marker'
+  renderOrder={9999}
+>
+  <T.PlaneGeometry
+    args={[0.5, 0.5]}
+    rotateX={-Math.PI / 2}
+  />
+  <T.ShaderMaterial
+    {fragmentShader}
+    {vertexShader}
+    uniforms={{ time: { value: 0 } }}
+    transparent
+    polygonOffset
+    polygonOffsetFactor={-1}
+  />
+</T.Mesh>

@@ -1,6 +1,12 @@
 
 export type XRManagerEventType = 'sessionstart' | 'sessionend'
 
+
+export interface XRController {
+  controller: THREE.XRTargetRaySpace
+  inputSource: XRInputSource
+}
+
 export interface XRManagerEvent {
   type: XRManagerEventType
   target: XRSession
