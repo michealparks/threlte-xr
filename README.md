@@ -170,8 +170,8 @@ Controllers can be added with `<Controllers />` for [motion-controllers](https:/
 <Controllers
   modelLeft={undefined | THREE.Object3D}
   modelRight={undefined | THREE.Object3D}
-  on:connect={(event) => {}}
-  on:disconnect={(event) => {}}
+  on:connected={(event) => {}}
+  on:disconnected={(event) => {}}
   on:select={(event) => {}}
   on:selectstart={(event) => {}}
   on:selectend={(event) => {}}
@@ -187,8 +187,8 @@ Controllers can be added with `<Controllers />` for [motion-controllers](https:/
 
 <Hands
   profile={'mesh' | 'spheres' | 'boxes' | 'none'}
-  on:connect={(event) => {}}
-  on:disconnect={(event) => {}}
+  on:connected={(event) => {}}
+  on:disconnected={(event) => {}}
   on:pinchstart={(event) => {}}
   on:pinchend={(event) => {}}
 />

@@ -1,9 +1,9 @@
 <script lang='ts'>
 
-import { onMount, onDestroy } from 'svelte';
+import { onDestroy } from 'svelte';
 import { T, useThrelte, createRawEventDispatcher, useRender } from '@threlte/core'
 import type { XRManagerEvent } from './types'
-import { session, referenceSpaceType, player, isPresenting, isHandTracking, xrFrame } from './stores'
+import { session, referenceSpaceType, player, isPresenting, isHandTracking, xrFrame, initialized } from './stores'
 
 /**
  * Enables foveated rendering. `Default is `0`
@@ -26,11 +26,12 @@ export let frameRate: number | undefined = undefined
 export let referenceSpace: XRReferenceSpaceType = 'local-floor'
 
 const dispatch = createRawEventDispatcher()
-const { renderer, scene, camera, frameloop } = useThrelte()
+const { renderer, scene, camera } = useThrelte()
 
 let cleanup: () => void = () => {}
 
 const animationLoop = (_dt: number, frame: XRFrame) => {
+  console.log('animationLoop')
   xrFrame.set(frame)
   renderer!.render(scene, camera.current)
 }
@@ -65,6 +66,8 @@ const handleInputSourcesChange = (nativeEvent: XRInputSourceChangeEvent) => {
 renderer!.xr.enabled = true
 renderer!.xr.addEventListener('sessionstart', handleSessionStart)
 renderer!.xr.addEventListener('sessionend', handleSessionEnd)
+
+useRender(() => { /* do nothing */ })
 renderer!.setAnimationLoop(animationLoop)
 
 $: renderer!.xr.setFoveation(foveation)
@@ -104,6 +107,8 @@ onDestroy(() => {
   renderer!.xr.removeEventListener('sessionend', handleSessionEnd)
   renderer!.setAnimationLoop(null)
 })
+
+$initialized = true
 
 </script>
 

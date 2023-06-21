@@ -2,7 +2,7 @@
 
 import { createEventDispatcher } from 'svelte'
 import { toggleSession, getSupportState } from './utils'
-import { session } from './stores'
+import { session, initialized } from './stores'
 
 /** The type of `XRSession` to create */
 export let mode: XRSessionMode
@@ -25,6 +25,10 @@ const dispatch = createEventDispatcher<{
 }>()
 
 const handleButtonClick = async (state: 'unsupported' | 'insecure' | 'blocked' | 'supported') => {
+  if (!$initialized) {
+    throw new Error('The <XR> component was not created. This is required to start an XR session.')
+  }
+
   dispatch('click', { state })
 
   if (state !== 'supported') return

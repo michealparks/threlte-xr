@@ -15,8 +15,8 @@ const handleXrEvent = (event) => dispatch(event.type, event)
 <Controller
   model={modelLeft}
   index={0}
-  on:connect={handleXrEvent}
-  on:disconnect={handleXrEvent}
+  on:connected={handleXrEvent}
+  on:disconnected={handleXrEvent}
   on:select={handleXrEvent}
   on:selectstart={handleXrEvent}
   on:selectend={handleXrEvent}
@@ -30,8 +30,8 @@ const handleXrEvent = (event) => dispatch(event.type, event)
 <Controller
   model={modelRight}
   index={1}
-  on:connect={handleXrEvent}
-  on:disconnect={handleXrEvent}
+  on:connected={handleXrEvent}
+  on:disconnected={handleXrEvent}
   on:select={handleXrEvent}
   on:selectstart={handleXrEvent}
   on:selectend={handleXrEvent}

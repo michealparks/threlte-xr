@@ -18,7 +18,7 @@ const { renderer } = useThrelte()
 const dispatch = createRawEventDispatcher()
 
 const hand = renderer!.xr.getHand(index)
-const model = handModelFactory.createHandModel(hand, profile)
+const model = handModelFactory.createHandModel(hand, profile === 'none' ? 'mesh' : profile)
 
 const handleConnectionUpdate = (event: THREE.Event) => {
   const connected = event.type === 'connected'

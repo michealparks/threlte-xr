@@ -1,6 +1,5 @@
 <script lang='ts'>
 
-import * as THREE from 'three'
 import { T } from '@threlte/core'
 
 const fragmentShader = `

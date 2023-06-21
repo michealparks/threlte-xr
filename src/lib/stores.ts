@@ -3,6 +3,7 @@ import { get, writable } from 'svelte/store'
 import { currentWritable } from '@threlte/core'
 import type { XRInteractionType, XRInteractionHandler, XRController } from './types'
 
+export const initialized = writable(false)
 export const xrFrame = currentWritable<XRFrame>(null!)
 export const session = currentWritable<XRSession | undefined>(undefined!)
 export const referenceSpaceType = currentWritable<XRReferenceSpaceType | undefined>(undefined)

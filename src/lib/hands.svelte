@@ -12,8 +12,8 @@ const dispatch = createRawEventDispatcher()
 <Hand
   index={0}
   {profile}
-  on:connect={(event) => dispatch('connect', event)}
-  on:disconnect={(event) => dispatch('disconnect', event)}
+  on:connected={(event) => dispatch('connected', event)}
+  on:disconnected={(event) => dispatch('disconnected', event)}
   on:pinchstart={(event) => dispatch('pinchstart', event)}
   on:pinchend={(event) => dispatch('pinchend', event)}
 >
@@ -23,8 +23,8 @@ const dispatch = createRawEventDispatcher()
 <Hand
   index={1}
   {profile}
-  on:connect={(event) => dispatch('connect', event)}
-  on:disconnect={(event) => dispatch('disconnect', event)}
+  on:connected={(event) => dispatch('connected', event)}
+  on:disconnected={(event) => dispatch('disconnected', event)}
   on:pinchstart={(event) => dispatch('pinchstart', event)}
   on:pinchend={(event) => dispatch('pinchend', event)}
 >

@@ -1,20 +1,16 @@
 <script lang='ts'>
 
 import * as THREE from 'three'
-import { T, useFrame, useThrelte } from '@threlte/core'
-import { useGltf } from '@threlte/extras'
-import { XR, Teleport, Controllers, Hands, useXR, useTeleport } from '$lib'
+import { T, useThrelte } from '@threlte/core'
+import { XR, Teleport, Controllers, Hands, useTeleport } from '$lib'
 
-const { isPresenting } = useXR()
-const { scene, camera, renderer } = useThrelte()
+const { camera } = useThrelte()
 const teleport = useTeleport()
 
 camera.current.position.z = 1.75
 camera.current.lookAt(0, 1.75, 1)
 
-let show = false
-
-const position = new THREE.Vector3()
+teleport(new THREE.Vector3(0.5, 0, 0.5))
 
 </script>
 

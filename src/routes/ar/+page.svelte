@@ -6,7 +6,7 @@ import Scene from './scene.svelte'
 
 </script>
 
-<Canvas>
+<Canvas frameloop='always'>
   <Scene />
 </Canvas>
 

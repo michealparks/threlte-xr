@@ -25,8 +25,8 @@ export const hideRaysOnBlur: boolean = false
 const { renderer } = useThrelte()
 
 const dispatch = createRawEventDispatcher<{
-  connect: THREE.Event
-  disconnect: THREE.Event
+  connected: THREE.Event
+  disconnected: THREE.Event
 }>()
 
 const controller = renderer!.xr.getController(index)
@@ -34,16 +34,16 @@ const grip = renderer!.xr.getControllerGrip(index)
 
 export let model: THREE.Object3D | undefined = controllerModelFactory.createControllerModel(grip)
 
-const handleConnect = (event: Event & { type: 'connect' } & { target: THREE.XRTargetRaySpace }) => {
+const handleConnected = (event: Event & { type: 'connected' } & { target: THREE.XRTargetRaySpace }) => {
   $controllers[index] = { controller, inputSource: event.data }
   controller.visible = grip.visible = true
-  dispatch('connect', event)
+  dispatch('connected', event)
 }
 
-const handleDisconnect = (event: Event & { type: 'disconnect' } & { target: THREE.XRTargetRaySpace }) => {
+const handleDisconnected = (event: Event & { type: 'disconnected' } & { target: THREE.XRTargetRaySpace }) => {
   controllers.update((value) => value.filter(({ target }) => target !== event.target))
   controller.visible = grip.visible = false
-  dispatch('disconnect', event)
+  dispatch('disconnected', event)
 }
 
 const handleXrEvent = (event: Event & { type: typeof xrEvents[number] } & { target: THREE.XRTargetRaySpace }) => {
@@ -61,16 +61,16 @@ const xrEvents = [
 ] as const
 
 onMount(() => {
-  controller.addEventListener('connected', handleConnect)
-  controller.addEventListener('disconnected', handleDisconnect)
+  controller.addEventListener('connected', handleConnected)
+  controller.addEventListener('disconnected', handleDisconnected)
   for (const event of xrEvents) {
     controller.addEventListener(event, handleXrEvent)
   }
 })
 
 onDestroy(() => {
-  controller.removeEventListener('connected', handleConnect)
-  controller.removeEventListener('disconnected', handleDisconnect)
+  controller.removeEventListener('connected', handleConnected)
+  controller.removeEventListener('disconnected', handleDisconnected)
   for (const event of xrEvents) {
     controller.removeEventListener(event, handleXrEvent)
   }

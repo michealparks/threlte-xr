@@ -22,14 +22,14 @@ camera.current.lookAt(0, 1.75, 1)
 />
 
 <Controllers
-  on:connect={(event) => console.log('connect', event)}
-  on:disconnect={(event) => console.log('disconnect', event)}
+  on:connected={(event) => console.log('connected', event)}
+  on:disconnected={(event) => console.log('disconnected', event)}
   on:select={(event) => console.log('select', event)}
 />
 
 <Hands
-  on:connect={(event) => console.log('connect', event)}
-  on:disconnect={(event) => console.log('disconnect', event)}
+  on:connected={(event) => console.log('connected', event)}
+  on:disconnected={(event) => console.log('disconnected', event)}
 />
 
 <T.Mesh rotation={[-Math.PI / 2, 0, 0]}>

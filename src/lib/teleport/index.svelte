@@ -3,7 +3,7 @@
 <script lang='ts'>
 
 import * as THREE from 'three'
-import { onMount, onDestroy, afterUpdate } from 'svelte'
+import { onMount, afterUpdate } from 'svelte'
 import { T, useFrame } from '@threlte/core'
 import { useTeleport, useXREvent } from '../hooks'
 import Marker from './marker.svelte'
@@ -18,9 +18,10 @@ let destination: THREE.Vector3 | undefined
 
 const teleport = useTeleport()
 const matrix4 = new THREE.Matrix4()
-const cleanups = []
 
 const { start, stop } = useFrame(() => {
+  if (selectingController === undefined) return
+
   hasIntersection = false
   destination = undefined
 
@@ -43,7 +44,7 @@ const handleSelectStart = (event) => {
   start()
 }
 
-const handleSelectEnd = (event) => {
+const handleSelectEnd = () => {
   stop()
 
   hasIntersection = false
@@ -54,8 +55,8 @@ const handleSelectEnd = (event) => {
   teleport(destination)
 }
 
-cleanups.push(useXREvent('selectstart', handleSelectStart))
-cleanups.push(useXREvent('selectend', handleSelectEnd))
+useXREvent('selectstart', handleSelectStart)
+useXREvent('selectend', handleSelectEnd)
 
 afterUpdate(() => {
   interactObjects = ref.children
@@ -63,10 +64,6 @@ afterUpdate(() => {
 
 onMount(() => {
   interactObjects = ref.children
-})
-
-onDestroy(() => {
-  for (const cleanup of cleanups) cleanup()
 })
 
 </script>

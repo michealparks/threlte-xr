@@ -14,7 +14,11 @@ camera.current.lookAt(0, 1.75, 1)
 const viveController = useGltf('./htc_vive_controller.glb')
 
 if (localStorage.getItem('debug')) {
-  new Inspector({ scene, camera: camera.current, renderer: renderer! })
+  new Inspector({
+    scene,
+    camera: camera.current as THREE.PerspectiveCamera,
+    renderer: renderer!
+  })
 }
 
 </script>
