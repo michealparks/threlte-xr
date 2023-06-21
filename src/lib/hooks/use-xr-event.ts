@@ -3,7 +3,6 @@ import { on, off } from '$lib/events'
 import type {
   XRControllerEventType,
   XREventHandler,
-  XRControllerEvent,
   XREventOptions,
 } from '$lib/types'
 
@@ -15,7 +14,7 @@ import type {
  * @param handler 
  * @param options 
  */
-export const useXREvent = (event: XRControllerEventType, handler: XREventHandler<XRControllerEvent>, { handedness }: XREventOptions = {}) => {
+export const useXREvent = (event: XRControllerEventType, handler: XREventHandler<any>, { handedness }: XREventOptions = {}) => {
   const listener = (event: any) => {
     if (handedness !== undefined && event.data.handedness !== handedness) {
       return

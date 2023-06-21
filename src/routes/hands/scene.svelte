@@ -11,7 +11,7 @@ camera.current.lookAt(0, 1.75, 1)
 
 let boxes: THREE.Object3D[] = []
 
-const handlePinchStart = (event) => {
+const handlePinchStart = (event: any) => {
   const controller = event.target
   const size = 0.05
   const geometry = new THREE.BoxGeometry(size, size, size)

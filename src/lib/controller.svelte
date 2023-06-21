@@ -39,7 +39,7 @@ type $$Events = {
   selectstart: XREvent<'selectstart'>
   selectend: XREvent<'selectend'>
   squeeze: XREvent<'squeeze'>
-  squeezeend: XREvent<'squeezend'>
+  squeezeend: XREvent<'squeezeend'>
   squeezestart: XREvent<'squeezestart'>
 }
 
@@ -59,13 +59,13 @@ const handleConnected = (event: XREvent<'connected'>) => {
 }
 
 const handleDisconnected = (event: XREvent<'disconnected'>) => {
-  controllers.update((value) => value.filter(({ target }) => target !== event.target))
+  controllers.update((value) => value.filter((item) => item.controller !== controller))
   controller.visible = grip.visible = false
   fire(event.type, event)
   dispatch('disconnected', event)
 }
 
-const handleXrEvent = (event: Event & XREvent<typeof xrEvents[number]>) => {
+const handleXrEvent = (event: XREvent<typeof xrEvents[number]>) => {
   fire(event.type, event)
   dispatch(event.type, event)
 }

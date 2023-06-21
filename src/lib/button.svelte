@@ -17,8 +17,8 @@ export let sessionInit: XRSessionInit & { domOverlay?: { root: HTMLElement } | u
 export let force: 'enter' | 'exit' | undefined = undefined
 
 type $$Events = {
-  click: { state: 'unsupported' | 'insecure' | 'blocked' | 'supported' }
-  error: Error
+  click: any
+  error: any
 }
 
 const dispatch = createEventDispatcher<$$Events>()

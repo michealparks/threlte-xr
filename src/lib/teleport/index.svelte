@@ -7,6 +7,7 @@ import { onMount, afterUpdate } from 'svelte'
 import { T, useFrame } from '@threlte/core'
 import { useTeleport, useXREvent } from '../hooks'
 import Marker from './marker.svelte'
+    import type { XREvent } from '$lib/types';
 
 export let raycaster = new THREE.Raycaster()
 
@@ -38,7 +39,7 @@ const { start, stop } = useFrame(() => {
 
 }, { autostart: false })
 
-const handleSelectStart = (event) => {
+const handleSelectStart = (event: XREvent) => {
   selectingController = event.target
 
   start()

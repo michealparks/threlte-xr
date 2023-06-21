@@ -2,7 +2,7 @@
 
 import { createRawEventDispatcher } from '@threlte/core'
 import Controller from './controller.svelte'
-import { XREvent } from './types'
+import type { XREvent } from './types'
 
 export let modelLeft: THREE.Object3D | undefined = undefined
 export let modelRight: THREE.Object3D | undefined = undefined
@@ -14,13 +14,13 @@ type $$Events = {
   selectstart: XREvent<'selectstart'>
   selectend: XREvent<'selectend'>
   squeeze: XREvent<'squeeze'>
-  squeezeend: XREvent<'squeezend'>
+  squeezeend: XREvent<'squeezeend'>
   squeezestart: XREvent<'squeezestart'>
 }
 
 const dispatch = createRawEventDispatcher<$$Events>()
 
-const handleXrEvent = (event) => dispatch(event.type, event)
+const handleXrEvent = (event: XREvent) => dispatch(event.type, event)
 
 </script>
 

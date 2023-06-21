@@ -9,16 +9,15 @@ export interface XRManagerEvent {
   target: XRSession
 }
 
-export interface XREventRepresentation {
-  type: string
-  target: any
-}
-
 export interface XREventOptions {
   handedness?: XRHandedness
 }
 
-export type XREvent<Type extends XREventRepresentation> = Event & { type: Type } & { target: THREE.XRTargetRaySpace }
+export type XRHandEventType = 'pinchstart' | 'pinchend' | 'connected' | 'disconnected'
+
+export type XRHandEvent<Type extends XRHandEventType = any> = THREE.Event & { type: Type } & { target: THREE.XRHandSpace }
+
+export type XREvent<Type extends THREE.XRControllerEventType = any> = THREE.Event & { type: Type } & { target: THREE.XRTargetRaySpace }
 
 export type XRControllerEventType = Exclude<THREE.XRControllerEventType, XRSessionEventType>
 
@@ -26,10 +25,9 @@ export interface XRControllerEvent {
   type: XRControllerEventType
   target: any
   data?: XRInputSource
-  fake?: boolean
 }
 
-export type XREventHandler<T extends XREventRepresentation> = (event: XREvent<T>) => void
+export type XREventHandler<T extends THREE.XRControllerEventType> = (event: XREvent<T>) => void
 export interface XREventOptions {
   handedness?: XRHandedness
 }

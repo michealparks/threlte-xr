@@ -1,9 +1,10 @@
 <script lang='ts' context='module'>
 
-import { onMount, onDestroy } from 'svelte';
+import { onMount, onDestroy } from 'svelte'
 import { T, useThrelte, createRawEventDispatcher } from '@threlte/core'
 import { XRHandModelFactory } from 'three/examples/jsm/webxr/XRHandModelFactory'
-import type { XREvent } from './types'
+import type { XRHandEvent } from './types'
+import { fire } from './events'
 
 const handModelFactory = new XRHandModelFactory()
 
@@ -16,10 +17,10 @@ export let index: number
 export let profile: 'mesh' | 'spheres' | 'boxes' | 'none' = 'mesh'
 
 type $$Events = {
-  connected: XREvent<'connected'>
-  disconnected: XREvent<'disconnected'>
-  pinchstart: XREvent<'pinchstart'>
-  pinchend: XREvent<'pinchend'>
+  connected: XRHandEvent<'connected'>
+  disconnected: XRHandEvent<'disconnected'>
+  pinchstart: XRHandEvent<'pinchstart'>
+  pinchend: XRHandEvent<'pinchend'>
 }
 
 const dispatch = createRawEventDispatcher<$$Events>()
@@ -28,14 +29,15 @@ const { renderer } = useThrelte()
 const hand = renderer!.xr.getHand(index)
 const model = handModelFactory.createHandModel(hand, profile === 'none' ? 'mesh' : profile)
 
-const handleConnectionUpdate = (event: XREvent<'connected' | 'disconnected'>) => {
+const handleConnectionUpdate = (event: XRHandEvent) => {
   const connected = event.type === 'connected'
   hand.visible = connected
   dispatch(event.type, event)
 }
 
-const handlePinchEvent = (event: XREvent<'pinchstart' | 'pinchend'>) => {
+const handlePinchEvent = (event: XRHandEvent) => {
   dispatch(event.type, event)
+  fire(event.type, event)
 }
 
 onMount(() => {
