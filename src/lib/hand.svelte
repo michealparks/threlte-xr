@@ -14,19 +14,26 @@ export let index: number
 
 export let profile: 'mesh' | 'spheres' | 'boxes' | 'none' = 'mesh'
 
+export interface HandEvents {
+  connected: number
+  disconnected: number
+  pinchstart: number
+  pinchend: number
+}
+
 const { renderer } = useThrelte()
-const dispatch = createRawEventDispatcher()
+const dispatch = createRawEventDispatcher<HandEvents>()
 
 const hand = renderer!.xr.getHand(index)
 const model = handModelFactory.createHandModel(hand, profile === 'none' ? 'mesh' : profile)
 
-const handleConnectionUpdate = (event: THREE.Event) => {
+const handleConnectionUpdate = (event: THREE.Event & { type: 'connected' | 'disconnected' }) => {
   const connected = event.type === 'connected'
   hand.visible = connected
   dispatch(event.type, event)
 }
 
-const handlePinchEvent = (event) => {
+const handlePinchEvent = (event: THREE.Event & { type: 'pinchstart' | 'pinchend' }) => {
   dispatch(event.type, event)
 }
 
@@ -41,7 +48,7 @@ onDestroy(() => {
   hand.removeEventListener('connected', handleConnectionUpdate)
   hand.removeEventListener('disconnected', handleConnectionUpdate)
   hand.removeEventListener('pinchstart', handlePinchEvent)
-  hand.removeEventListener('pinch', handlePinchEvent)
+  hand.removeEventListener('pinchend', handlePinchEvent)
 })
 
 </script>

@@ -48,7 +48,16 @@ const getSessionOptions = (
   return sessionInit
 }
 
-export const toggleSession = async (
+/**
+ * Starts / ends an XR session.
+ *
+ * @param sessionMode an XR session mode: 'inline' | 'immersive-vr' | 'immersive-ar'
+ * @param sessionInit an XRSessionInit object
+ * @param enterOnly only 
+ * @param exitOnly 
+ * @returns 
+ */
+export const toggleSession = (
   sessionMode: XRSessionMode,
   sessionInit: XRSessionInit & { domOverlay?: { root: HTMLElement } | undefined } | undefined,
   enterOnly: boolean,
@@ -62,9 +71,9 @@ export const toggleSession = async (
 
   // Exit/enter session
   if (hasSession) {
-    return await stopSession()
+    return stopSession()
   } else {
-    return await startSession(sessionMode, sessionInit)
+    return startSession(sessionMode, sessionInit)
   }
 }
 

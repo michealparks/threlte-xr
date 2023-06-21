@@ -24,32 +24,7 @@ export const hideRaysOnBlur: boolean = false
 
 const { renderer } = useThrelte()
 
-const dispatch = createRawEventDispatcher<{
-  connected: THREE.Event
-  disconnected: THREE.Event
-}>()
-
-const controller = renderer!.xr.getController(index)
-const grip = renderer!.xr.getControllerGrip(index)
-
-export let model: THREE.Object3D | undefined = controllerModelFactory.createControllerModel(grip)
-
-const handleConnected = (event: Event & { type: 'connected' } & { target: THREE.XRTargetRaySpace }) => {
-  $controllers[index] = { controller, inputSource: event.data }
-  controller.visible = grip.visible = true
-  dispatch('connected', event)
-}
-
-const handleDisconnected = (event: Event & { type: 'disconnected' } & { target: THREE.XRTargetRaySpace }) => {
-  controllers.update((value) => value.filter(({ target }) => target !== event.target))
-  controller.visible = grip.visible = false
-  dispatch('disconnected', event)
-}
-
-const handleXrEvent = (event: Event & { type: typeof xrEvents[number] } & { target: THREE.XRTargetRaySpace }) => {
-  fire(event.type, event)
-  dispatch(event.type, event)
-}
+type XREvent<Type> = Event & { type: Type } & { target: THREE.XRTargetRaySpace }
 
 const xrEvents = [
   'select',
@@ -59,6 +34,43 @@ const xrEvents = [
   'squeezeend',
   'squeezestart'
 ] as const
+
+export interface $$Events {
+  connected: XREvent<'connected'>
+  disconnected: XREvent<'disconnected'>
+  select: XREvent<'select'>
+  selectstart: XREvent<'selectstart'>
+  selectend: XREvent<'selectend'>
+  squeeze: XREvent<'squeeze'>
+  squeezeend: XREvent<'squeezend'>
+  squeezestart: XREvent<'squeezestart'>
+}
+
+const dispatch = createRawEventDispatcher<$$Events>()
+
+const controller = renderer!.xr.getController(index)
+const grip = renderer!.xr.getControllerGrip(index)
+
+export let model: THREE.Object3D | undefined = controllerModelFactory.createControllerModel(grip)
+
+const handleConnected = (event: XREvent<'connected'>) => {
+  $controllers[index] = { controller, inputSource: event.data }
+  controller.visible = grip.visible = true
+  fire(event.type, event)
+  dispatch('connected', event)
+}
+
+const handleDisconnected = (event: XREvent<'disconnected'>) => {
+  controllers.update((value) => value.filter(({ target }) => target !== event.target))
+  controller.visible = grip.visible = false
+  fire(event.type, event)
+  dispatch('disconnected', event)
+}
+
+const handleXrEvent = (event: Event & XREvent<typeof xrEvents[number]>) => {
+  fire(event.type, event)
+  dispatch(event.type, event)
+}
 
 onMount(() => {
   controller.addEventListener('connected', handleConnected)

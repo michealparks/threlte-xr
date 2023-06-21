@@ -2,7 +2,7 @@
 
 import * as THREE from 'three'
 import { T, useThrelte } from '@threlte/core'
-import { XR, Controllers, Hands } from '$lib'
+import { XR, Controllers, Hand } from '$lib'
 
 const { camera } = useThrelte()
 
@@ -33,7 +33,8 @@ const handlePinchEnd = () => {
 
 <XR />
 <Controllers />
-<Hands
+<Hand
+  index={0}
   on:pinchstart={handlePinchStart}
   on:pinchend={handlePinchEnd}
 />
