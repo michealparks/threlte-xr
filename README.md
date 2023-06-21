@@ -220,14 +220,6 @@ useXREvent('squeeze', (event: XRControllerEvent) => {}, {
 })
 ```
 
-It returns a cleanup function to remove the event listener.
-
-```ts
-const cleanup = useXREvent('select', (event: XRControllerEvent) => {})
-
-cleanup()
-```
-
 ### Custom XRButton
 
 While you can customize <XRButton>, you can also create your own. For this there's a couple of low-level utilities of a headless xr button: `startSession`, `stopSession` and `toggleSession`.
