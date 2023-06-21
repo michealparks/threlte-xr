@@ -13,16 +13,15 @@ export let mode: XRSessionMode
  */
 export let sessionInit: XRSessionInit & { domOverlay?: { root: HTMLElement } | undefined } | undefined
 
-/** Whether this button should only enter an `XRSession`. Default is `false` */
-export let enterOnly: boolean = false
+/** Whether this button should only enter / exit an `XRSession`. Default is to toggle both ways */
+export let force: 'enter' | 'exit' | undefined = undefined
 
-/** Whether this button should only exit an `XRSession`. Default is `false` */
-export let exitOnly: boolean = false
-
-const dispatch = createEventDispatcher<{
+type $$Events = {
   click: { state: 'unsupported' | 'insecure' | 'blocked' | 'supported' }
-  error: unknown
-}>()
+  error: Error
+}
+
+const dispatch = createEventDispatcher<$$Events>()
 
 const handleButtonClick = async (state: 'unsupported' | 'insecure' | 'blocked' | 'supported') => {
   if (!$initialized) {
@@ -34,7 +33,7 @@ const handleButtonClick = async (state: 'unsupported' | 'insecure' | 'blocked' |
   if (state !== 'supported') return
 
   try {
-    await toggleSession(mode, sessionInit, enterOnly, exitOnly)
+    await toggleSession(mode, sessionInit, force)
   } catch (error) {
     /** This callback gets fired if XR initialization fails. */
     dispatch('error', error)
@@ -57,8 +56,7 @@ display info about your WebXR session. This is aliased by `ARButton` and
     sessionInit={{
       optionalFeatures: ['local-floor', 'bounded-floor', 'hand-tracking', 'layers']
     }}
-    enterOnly={false}
-    exitOnly={false}
+    force={'enter' | 'exit' | undefined}
     on:error={(event) => {}}
     on:click={(event) => {}}
   />

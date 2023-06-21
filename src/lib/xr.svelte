@@ -25,42 +25,46 @@ export let frameRate: number | undefined = undefined
 /** Type of WebXR reference space to use. Default is `local-floor` */
 export let referenceSpace: XRReferenceSpaceType = 'local-floor'
 
-const dispatch = createRawEventDispatcher()
+type $$Events = {
+  /** Called as an XRSession is requested */
+  sessionstart: THREE.Event & { target: XRSession }
+  /** Called after an XRSession is terminated */
+  sessionend: THREE.Event & { target: XRSession }
+  /** Called when an XRSession is hidden or unfocused. */
+  visibilitychange: THREE.Event & { target: XRSession }
+  /** Called when available inputsources change */
+  inputsourceschange: THREE.Event & { target: XRSession }
+}
+
+const dispatch = createRawEventDispatcher<$$Events>()
+
 const { renderer, scene, camera } = useThrelte()
 
 let cleanup: () => void = () => {}
 
 const animationLoop = (_dt: number, frame: XRFrame) => {
-  console.log('animationLoop')
   xrFrame.set(frame)
   renderer!.render(scene, camera.current)
 }
 
-const handleSessionStart = (nativeEvent: XRManagerEvent) => {
+const handleSessionStart = (event: XRManagerEvent) => {
   $isPresenting = true
-
-  /** Called as an XRSession is requested */
-  dispatch('sessionstart', { ...nativeEvent, target: $session! })
+  dispatch('sessionstart', { ...event, target: $session! })
 }
 
-const handleSessionEnd = (nativeEvent: XRManagerEvent) => {
+const handleSessionEnd = (event: XRManagerEvent) => {
+  dispatch('sessionend', { ...event, target: $session! })
   $isPresenting = false
   $session = undefined
-
-  /** Called after an XRSession is terminated */
-  dispatch('sessionend', { ...nativeEvent, target: $session! })
 }
 
-const handleVisibilityChange = (nativeEvent: XRSessionEvent) => {
-  /** Called when an XRSession is hidden or unfocused. */
-  dispatch('visibilitychange', { ...nativeEvent, target: $session! })
+const handleVisibilityChange = (event: XRSessionEvent) => {
+  dispatch('visibilitychange', { ...event, target: $session! })
 }
 
-const handleInputSourcesChange = (nativeEvent: XRInputSourceChangeEvent) => {
+const handleInputSourcesChange = (event: XRInputSourceChangeEvent) => {
   $isHandTracking = Object.values($session!.inputSources).some((source) => source.hand)
-
-  /** Called when available inputsources change */
-  dispatch('inputsourceschange', { ...nativeEvent, target: $session! })
+  dispatch('inputsourceschange', { ...event, target: $session! })
 }
 
 renderer!.xr.enabled = true
@@ -73,11 +77,15 @@ renderer!.setAnimationLoop(animationLoop)
 $: renderer!.xr.setFoveation(foveation)
 
 $: if (frameRate !== undefined) {
-  try { $session?.updateTargetFrameRate(frameRate) } catch {}
+  try {
+    $session?.updateTargetFrameRate(frameRate)
+  } catch {}
 }
 
-$: renderer!.xr.setReferenceSpaceType(referenceSpace)
-$: $referenceSpaceType = referenceSpace
+$: {
+  renderer!.xr.setReferenceSpaceType(referenceSpace)
+  $referenceSpaceType = referenceSpace
+}
 
 $: {
   cleanup()

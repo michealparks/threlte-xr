@@ -3,7 +3,7 @@ import { get } from 'svelte/store'
 
 /**
  * Gets the support state of requested session mode.
- * @param mode 
+ * @param mode The desired session mode.
  * @returns The current support state
  */
 export const getSupportState = async (mode: XRSessionMode): Promise<'unsupported' | 'insecure' | 'blocked' | 'supported'> => {
@@ -53,55 +53,29 @@ const getSessionOptions = (
  *
  * @param sessionMode an XR session mode: 'inline' | 'immersive-vr' | 'immersive-ar'
  * @param sessionInit an XRSessionInit object
- * @param enterOnly only 
- * @param exitOnly 
+ * @param force Whether this button should only enter / exit an `XRSession`. Default is to toggle both ways
  * @returns 
  */
-export const toggleSession = (
+export const toggleSession = async (
   sessionMode: XRSessionMode,
-  sessionInit: XRSessionInit & { domOverlay?: { root: HTMLElement } | undefined } | undefined,
-  enterOnly: boolean,
-  exitOnly: boolean,
-) => {
+  sessionInit?: (XRSessionInit & { domOverlay?: { root: HTMLElement } | undefined }) | undefined,
+  force?: 'enter' | 'exit'
+): Promise<XRSession | undefined> => {
+  const currentSession = get(session)
   const hasSession = get(session) !== undefined
 
-  // Bail if certain toggle way is disabled
-  if (hasSession && enterOnly) return
-  if (!hasSession && exitOnly) return
+  if (force === 'enter' && hasSession) return currentSession
+  if (force === 'exit' && !hasSession) return
 
-  // Exit/enter session
-  if (hasSession) {
-    return stopSession()
-  } else {
-    return startSession(sessionMode, sessionInit)
-  }
-}
-
-export const startSession = async (
-  sessionMode: XRSessionMode,
-  sessionInit: XRSessionInit & { domOverlay?: { root: HTMLElement } | undefined } | undefined,
-): Promise<XRSession | undefined> => {
-  let currentSession = get(session)
-
+  // Exit / enter session
   if (currentSession !== undefined) {
-    console.warn('threlte-xr: session already started.')
-    return currentSession
-  }
-
-  const options = getSessionOptions(get(referenceSpaceType), sessionInit)
-  const nextSession = await navigator.xr!.requestSession(sessionMode, options)
-  session.set(nextSession)
-  return nextSession
-}
-
-export const stopSession = async () => {
-  const currentSession = get(session)
-
-  if (currentSession === undefined) {
-    console.warn('threlte-xr: no session to stop.')
+    await currentSession.end()
+    session.set(undefined)
     return
+  } else {
+    const options = getSessionOptions(get(referenceSpaceType), sessionInit)
+    const nextSession = await navigator.xr!.requestSession(sessionMode, options)
+    session.set(nextSession)
+    return nextSession
   }
-
-  await currentSession.end()
-  session.set(undefined)
 }

@@ -2,11 +2,23 @@
 
 import { createRawEventDispatcher } from '@threlte/core'
 import Controller from './controller.svelte'
+import { XREvent } from './types'
 
 export let modelLeft: THREE.Object3D | undefined = undefined
 export let modelRight: THREE.Object3D | undefined = undefined
 
-const dispatch = createRawEventDispatcher()
+type $$Events = {
+  connected: XREvent<'connected'>
+  disconnected: XREvent<'disconnected'>
+  select: XREvent<'select'>
+  selectstart: XREvent<'selectstart'>
+  selectend: XREvent<'selectend'>
+  squeeze: XREvent<'squeeze'>
+  squeezeend: XREvent<'squeezend'>
+  squeezestart: XREvent<'squeezestart'>
+}
+
+const dispatch = createRawEventDispatcher<$$Events>()
 
 const handleXrEvent = (event) => dispatch(event.type, event)
 

@@ -73,8 +73,7 @@ If you want the hands, controllers, or other objects to only be added to the `TH
 <!--
   mode - The type of `XRSession` to create
   sessionInit - `XRSession` configuration options, see https://immersive-web.github.io/webxr/#feature-dependencies
-  enterOnly - Whether this button should only enter an `XRSession`. Default is `false`
-  exitOnly - Whether this button should only exit an `XRSession`. Default is `false`
+  force - Whether this button should only enter / exit an `XRSession`. Default is to toggle both ways
 
   on:error - Dispatched if XR initialization fails.
   on:click - Dispatched if a click occurs.
@@ -82,8 +81,7 @@ If you want the hands, controllers, or other objects to only be added to the `TH
 <XRButton
   mode={'immersive-ar' | 'immersive-vr' | 'inline'}
   sessionInit={{ optionalFeatures: ['local-floor', 'bounded-floor', 'hand-tracking', 'layers'] }}
-  enterOnly={false}
-  exitOnly={false}
+  force={'enter' | 'exit' | undefined}
   on:error={(event) => {}}
   on:click={(event) => {}}
 />
@@ -222,9 +220,9 @@ useXREvent('squeeze', (event: XRControllerEvent) => {}, {
 
 ### Custom XRButton
 
-While you can customize <XRButton>, you can also create your own. For this there's a couple of low-level utilities of a headless xr button: `startSession`, `stopSession` and `toggleSession`.
+While you can customize <XRButton>, you can also create your own. For this there's a low-level utility available of a headless xr button: `toggleSession`.
 
-```jsx
+```ts
 import { toggleSession } from 'threlte-xr'
 
 const handleClick = async () => {
@@ -241,3 +239,5 @@ button.innerText = 'Enter VR'
 button.addEventListener('click', handleClick)
 document.appendChild(button)
 ```
+
+You can optionally force 

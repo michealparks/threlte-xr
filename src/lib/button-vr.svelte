@@ -3,10 +3,12 @@
 import { createEventDispatcher } from 'svelte'
 import XRButton from './button.svelte'
 
-const dispatch = createEventDispatcher<{
+type $$Events = {
   click: { state: 'unsupported' | 'insecure' | 'blocked' | 'supported' }
   error: unknown
-}>()
+}
+
+const dispatch = createEventDispatcher<$$Events>()
 
 </script>
 
@@ -22,7 +24,7 @@ const dispatch = createEventDispatcher<{
 ```
 -->
 <XRButton
-  {...$$props}
+  {...$$restProps}
   mode='immersive-vr'
   sessionInit={{
     optionalFeatures: ['local-floor', 'bounded-floor', 'hand-tracking', 'layers']

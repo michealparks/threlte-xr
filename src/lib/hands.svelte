@@ -2,10 +2,18 @@
 
 import { createRawEventDispatcher } from '@threlte/core'
 import Hand from './hand.svelte'
+import type { XREvent } from './types'
 
 export let profile: 'mesh' | 'spheres' | 'boxes' | 'none' = 'mesh'
 
-const dispatch = createRawEventDispatcher()
+type $$Events = {
+  connected: XREvent<'connected'>
+  disconnected: XREvent<'disconnected'>
+  pinchstart: XREvent<'pinchstart'>
+  pinchend: XREvent<'pinchend'>
+}
+
+const dispatch = createRawEventDispatcher<$$Events>()
 
 </script>
 

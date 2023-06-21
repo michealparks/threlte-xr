@@ -1,14 +1,11 @@
 
-export type XRManagerEventType = 'sessionstart' | 'sessionend'
-
-
 export interface XRController {
   controller: THREE.XRTargetRaySpace
   inputSource: XRInputSource
 }
 
 export interface XRManagerEvent {
-  type: XRManagerEventType
+  type: 'sessionstart' | 'sessionend'
   target: XRSession
 }
 
@@ -21,10 +18,7 @@ export interface XREventOptions {
   handedness?: XRHandedness
 }
 
-export interface XREvent<T extends XREventRepresentation> {
-  nativeEvent: T
-  target: T['target']
-}
+export type XREvent<Type extends XREventRepresentation> = Event & { type: Type } & { target: THREE.XRTargetRaySpace }
 
 export type XRControllerEventType = Exclude<THREE.XRControllerEventType, XRSessionEventType>
 

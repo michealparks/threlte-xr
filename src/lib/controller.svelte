@@ -5,6 +5,7 @@ import { onMount, onDestroy } from 'svelte'
 import { T, useThrelte, createRawEventDispatcher } from '@threlte/core'
 import { XRControllerModelFactory } from 'three/examples/jsm/webxr/XRControllerModelFactory'
 import { fire } from './events'
+import type { XREvent } from './types'
 
 const controllerModelFactory = new XRControllerModelFactory()
 
@@ -22,10 +23,6 @@ export const rayMaterial: THREE.MeshBasicMaterial | undefined = undefined
 /** Whether to hide controllers' rays on blur. Default is `false` */
 export const hideRaysOnBlur: boolean = false
 
-const { renderer } = useThrelte()
-
-type XREvent<Type> = Event & { type: Type } & { target: THREE.XRTargetRaySpace }
-
 const xrEvents = [
   'select',
   'selectstart',
@@ -35,7 +32,7 @@ const xrEvents = [
   'squeezestart'
 ] as const
 
-export interface $$Events {
+type $$Events = {
   connected: XREvent<'connected'>
   disconnected: XREvent<'disconnected'>
   select: XREvent<'select'>
@@ -48,6 +45,7 @@ export interface $$Events {
 
 const dispatch = createRawEventDispatcher<$$Events>()
 
+const { renderer } = useThrelte()
 const controller = renderer!.xr.getController(index)
 const grip = renderer!.xr.getControllerGrip(index)
 
