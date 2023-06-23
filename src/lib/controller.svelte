@@ -17,7 +17,7 @@ const controllerModelFactory = new XRControllerModelFactory()
 
 export let index: number
 
-export let ray = true
+export let ray = false
 
 /** Optional material props to pass to controllers' ray indicators */
 export const rayMaterial: THREE.MeshBasicMaterial | undefined = undefined

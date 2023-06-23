@@ -9,7 +9,7 @@ import { useFrame } from '@threlte/core'
 // export let target: XRController
 
 /** Whether to hide the ray on controller blur. Default is `false` */
-export let hideOnBlur: boolean = false
+// export let hideOnBlur: boolean = false
 
 let ref: THREE.Line
 
@@ -32,7 +32,7 @@ useFrame(() => {
   // that don't have handedness set to 'none'
   const offset = -0.01
   ref.scale.z = rayLength + offset
-})
+}, { autostart: false })
 
 </script>
 
