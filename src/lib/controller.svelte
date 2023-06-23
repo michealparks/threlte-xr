@@ -6,6 +6,8 @@ import { T, useThrelte, createRawEventDispatcher } from '@threlte/core'
 import { XRControllerModelFactory } from 'three/examples/jsm/webxr/XRControllerModelFactory'
 import { fire } from './events'
 import type { XREvent } from './types'
+import { isHandTracking } from './stores'
+import Ray from './ray.svelte'
 
 const controllerModelFactory = new XRControllerModelFactory()
 
@@ -15,7 +17,7 @@ const controllerModelFactory = new XRControllerModelFactory()
 
 export let index: number
 
-export let ray = false
+export let ray = true
 
 /** Optional material props to pass to controllers' ray indicators */
 export const rayMaterial: THREE.MeshBasicMaterial | undefined = undefined
@@ -95,11 +97,10 @@ onDestroy(() => {
 
 <T is={controller} name='XR Controller {index}'>
   {#if ray}
-    <!-- <Ray
+    <Ray
       visible={!$isHandTracking}
       hideOnBlur={hideRaysOnBlur}
-      {target}
       material={rayMaterial}
-    /> -->
+    />
   {/if}
 </T>

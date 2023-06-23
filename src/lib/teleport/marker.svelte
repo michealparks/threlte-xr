@@ -23,7 +23,7 @@ void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(p
 >
   <T.PlaneGeometry
     args={[0.5, 0.5]}
-    rotateX={-Math.PI / 2}
+    on:create={({ ref }) => ref.rotateX(-Math.PI / 2)}
   />
   <T.ShaderMaterial
     {fragmentShader}

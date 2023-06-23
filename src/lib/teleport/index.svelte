@@ -4,10 +4,11 @@
 
 import * as THREE from 'three'
 import { onMount, afterUpdate } from 'svelte'
-import { T, useFrame } from '@threlte/core'
+import { T } from '@threlte/core'
 import { useTeleport, useXREvent } from '../hooks'
+import { useXRFrame } from '$lib/hooks/use-xr-frame'
 import Marker from './marker.svelte'
-    import type { XREvent } from '$lib/types';
+import type { XREvent } from '$lib/types';
 
 export let raycaster = new THREE.Raycaster()
 
@@ -20,7 +21,7 @@ let destination: THREE.Vector3 | undefined
 const teleport = useTeleport()
 const matrix4 = new THREE.Matrix4()
 
-const { start, stop } = useFrame(() => {
+const { start, stop } = useXRFrame(() => {
   if (selectingController === undefined) return
 
   hasIntersection = false
@@ -36,7 +37,6 @@ const { start, stop } = useFrame(() => {
 
   hasIntersection = true
   destination = intersect.point
-
 }, { autostart: false })
 
 const handleSelectStart = (event: XREvent) => {

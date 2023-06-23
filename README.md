@@ -139,7 +139,9 @@ If you want the hands, controllers, or other objects to only be added to the `TH
 
 This hook gives you access to the current state configured by `<XR />`.
 
-```jsx
+```ts
+import { useXR } from 'threlte-xr'
+
 const {
   // An array of connected `XRController`
   controllers,
@@ -192,11 +194,24 @@ Controllers can be added with `<Controllers />` for [motion-controllers](https:/
 />
 ```
 
+### useXRFrame
+> **Warning**
+> `useXRFrame` is available because threlte's `useFrame` does not currently work during an XRSession. This may not be the case in the future, and if so it will likely be first deprecated and later removed.
+
+```ts
+import { useXRFrame } from 'threlte-xr'
+
+useXRFrame((frame: XRFrame, dt: number) => {
+
+})
+```
+
+
 ### useController
 
 `useController` references an `XRController` by handedness, exposing position and orientation info.
 
-```jsx
+```ts
 const leftController = useController('left')
 const rightController = useController('right')
 const gazeController = useController('none')
@@ -239,5 +254,3 @@ button.innerText = 'Enter VR'
 button.addEventListener('click', handleClick)
 document.appendChild(button)
 ```
-
-You can optionally force 
