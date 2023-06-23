@@ -19,6 +19,8 @@ npm install threlte-xr
   - [x] Events
   - [ ] Custom hand models and children
 - [ ] Teleporting
+  - [x] Hook
+  - [ ] Teleport component
 - [ ] Smooth movement
 - [ ] Interactive objects
 - [ ] Works smoothly with @threlte/rapier
@@ -231,6 +233,20 @@ It supports an optional third parameter with options for filtering by handedness
 useXREvent('squeeze', (event: XRControllerEvent) => {}, {
   handedness: 'left' | 'right' | 'none'
 })
+```
+
+### useTeleport
+
+`useTeleport` returns a `teleport` function, which allows you to move the reference frame of the user to a desired position.
+
+```ts
+const teleport = useTeleport()
+const vector3 = new THREE.Vector3()
+
+// The desired destination
+vector3.set(10, 0, -5)
+
+teleport(vector3)
 ```
 
 ### Custom XRButton

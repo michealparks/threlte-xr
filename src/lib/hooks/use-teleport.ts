@@ -18,14 +18,17 @@ const offset = { x: 0, y: 0, z: 0 }
 export const useTeleport = () => {
   const { renderer } = useThrelte()
 
+  let baseReferenceSpace = renderer!.xr.getReferenceSpace()
+
   /**
    * Teleports a player to a position - and optionally a direction.
    */
   return (position: THREE.Vector3 | THREE.Vector3Tuple, direction = quaternion) => {
-    const referenceSpace = renderer!.xr.getReferenceSpace()
-    const frame = renderer!.xr.getFrame()
+    baseReferenceSpace ??= renderer!.xr.getReferenceSpace()
+  
+    if (baseReferenceSpace === null) return
 
-    if (referenceSpace === null) return
+    const frame = renderer!.xr.getFrame()
 
     let x = 0, y = 0, z = 0
 
@@ -41,14 +44,13 @@ export const useTeleport = () => {
     offset.y = -y
     offset.z = -z
 
-    const pose = frame?.getViewerPose(referenceSpace)
-  
+    const pose = frame?.getViewerPose(baseReferenceSpace)
     if (pose !== undefined) {
       offset.x += pose.transform.position.x
       offset.z += pose.transform.position.z
     }
 
     const teleportOffset = new XRRigidTransform(offset, direction)
-    renderer!.xr.setReferenceSpace(referenceSpace.getOffsetReferenceSpace(teleportOffset))
+    renderer!.xr.setReferenceSpace(baseReferenceSpace.getOffsetReferenceSpace(teleportOffset))
   }
 }
