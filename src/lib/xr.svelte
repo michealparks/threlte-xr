@@ -1,7 +1,7 @@
 <script lang='ts'>
 
 import { onDestroy } from 'svelte';
-import { T, useThrelte, createRawEventDispatcher, useRender } from '@threlte/core'
+import { T, useThrelte, createRawEventDispatcher } from '@threlte/core'
 import type { XRManagerEvent } from './types'
 import { session, referenceSpaceType, player, isPresenting, isHandTracking, xrFrame, initialized } from './stores'
 import { xrRenderCallbacks } from './hooks/use-xr-frame'
@@ -73,8 +73,6 @@ renderer!.xr.enabled = true
 renderer!.xr.addEventListener('sessionstart', handleSessionStart)
 renderer!.xr.addEventListener('sessionend', handleSessionEnd)
 renderer!.setAnimationLoop(animationLoop)
-
-useRender(() => { /* do nothing */ })
 
 $: renderer!.xr.setFoveation(foveation)
 
