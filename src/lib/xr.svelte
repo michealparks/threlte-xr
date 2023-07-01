@@ -1,7 +1,7 @@
 <script lang='ts'>
 
 import { onDestroy } from 'svelte';
-import { T, useThrelte, createRawEventDispatcher } from '@threlte/core'
+import { T, useThrelte, createRawEventDispatcher, useFrame } from '@threlte/core'
 import type { XRManagerEvent } from './types'
 import { session, referenceSpaceType, player, isPresenting, isHandTracking, xrFrame, initialized } from './stores'
 import { xrRenderCallbacks } from './hooks/use-xr-frame'
@@ -39,22 +39,26 @@ type $$Events = {
 
 const dispatch = createRawEventDispatcher<$$Events>()
 
-const { renderer, scene, camera } = useThrelte()
+const { renderer, camera } = useThrelte()
 
 let cleanup: () => void = () => {}
 
-const animationLoop = (dt: number, frame: XRFrame) => {
+const { start, stop } = useFrame((_ctx, dt) => {
+  const frame = renderer!.xr.getFrame()
   xrFrame.set(frame)
-  renderer!.render(scene, camera.current)
-  for (let callback of xrRenderCallbacks) callback(frame, dt)
-}
+  for (let callback of xrRenderCallbacks) {
+    callback(frame, dt)
+  }
+}, { autostart: false })
 
 const handleSessionStart = (event: XRManagerEvent) => {
+  start()
   $isPresenting = true
   dispatch('sessionstart', { ...event, target: $session! })
 }
 
 const handleSessionEnd = (event: XRManagerEvent) => {
+  stop()
   dispatch('sessionend', { ...event, target: $session! })
   $isPresenting = false
   $session = undefined
@@ -72,7 +76,6 @@ const handleInputSourcesChange = (event: XRInputSourceChangeEvent) => {
 renderer!.xr.enabled = true
 renderer!.xr.addEventListener('sessionstart', handleSessionStart)
 renderer!.xr.addEventListener('sessionend', handleSessionEnd)
-renderer!.setAnimationLoop(animationLoop)
 
 $: renderer!.xr.setFoveation(foveation)
 
