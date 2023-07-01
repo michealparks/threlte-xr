@@ -4,8 +4,10 @@ import * as THREE from 'three'
 import { T, useThrelte } from '@threlte/core'
 import { XR, Teleport, Controllers, Hands, useTeleport } from '$lib'
 
-const { camera } = useThrelte()
+const { camera, renderer } = useThrelte()
 const teleport = useTeleport()
+
+renderer?.setClearColor(0x000000)
 
 camera.current.position.z = 1.75
 camera.current.lookAt(0, 1.75, 1)

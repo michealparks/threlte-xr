@@ -40,7 +40,11 @@ const handleButtonClick = async (state: 'unsupported' | 'insecure' | 'blocked' |
   }
 }
 
-$: modeText = { 'immersive-vr': 'VR', 'immersive-ar': 'AR', inline: 'inline' }[mode]
+$: modeText = {
+  'immersive-vr': 'VR',
+  'immersive-ar': 'AR',
+  inline: 'inline'
+}[mode]
 
 </script>
 
@@ -63,7 +67,7 @@ display info about your WebXR session. This is aliased by `ARButton` and
 ```
 -->
 {#await getSupportState(mode) then state}
-  <button {...$$props} on:click={() => handleButtonClick(state)}>
+  <button {...$$restProps} on:click={() => handleButtonClick(state)}>
     {#if state === 'unsupported'}
       {modeText} unsupported
     {:else if state === 'insecure'}

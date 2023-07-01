@@ -5,12 +5,14 @@ type XRCallback = (frame: XRFrame, dt: number) => void
 export const xrRenderCallbacks: XRCallback[] = []
 
 /**
- * This replaces useFrame, which does not currently work in XR environments. It may be deprecated and removed in the near future.
+ *
+ * @deprecated Use useFrame()
  * @param callback 
  * @param options 
  * @returns 
  */
 export const useXRFrame = (callback: XRCallback, options: { autostart?: boolean } = {}) => {
+  console.warn('Warning: useXRFrame is deprecated. It will be removed in an upcoming release. Use useFrame instead.')
   const start = () => xrRenderCallbacks.push(callback)
   const stop = () => xrRenderCallbacks.splice(xrRenderCallbacks.indexOf(callback), 1)
 
