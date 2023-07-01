@@ -23,7 +23,7 @@
 		"!dist/**/*.spec.*"
 	],
 	"peerDependencies": {
-		"@threlte/core": "^6.0.0-next.9",
+		"@threlte/core": "^6.0.0-next.10",
 		"svelte": "^3.54.0",
 		"three": "^0.153.0"
 	},
