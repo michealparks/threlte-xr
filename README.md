@@ -240,7 +240,7 @@ useXREvent('squeeze', (event: XRControllerEvent) => {}, {
 
 The `<TeleportControls>` component allows the creation of a teleportation experience that is meant to closely mirror those found in many games - such as Half Life: Alyx - as well as the Quest home environment.
 
-Adding the `<TeleportControls>` component to a scene will enabled spawning a teleport indicator if the gamepad's joystick is pushed forward. Users will then be able to teleport to any area specified by one or more navigation meshes that are provided as children to this component.
+Adding the `<TeleportControls>` component to a scene will enable spawning a teleport indicator if the gamepad's joystick is pushed forward. Users will then be able to teleport to any area specified by one or more navigation meshes that are provided as children to this component.
 
 ```svelte
 <TeleportControls

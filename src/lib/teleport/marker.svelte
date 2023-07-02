@@ -4,8 +4,6 @@ import { tweened } from 'svelte/motion';
 import { cubicOut } from 'svelte/easing';
 import { T } from '@threlte/core'
 
-export let open = false
-
 const fragmentShader = `
 uniform float time;
 uniform float size;
