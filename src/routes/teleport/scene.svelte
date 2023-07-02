@@ -17,7 +17,7 @@ teleport(new THREE.Vector3(0.5, 0, 0.5))
 </script>
 
 <XR>
-  <Controllers on:connected={(event) => console.log(event)} />
+  <Controllers />
   <Hands />
 </XR>
 

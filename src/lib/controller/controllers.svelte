@@ -19,14 +19,12 @@ type $$Events = {
 }
 
 const dispatch = createRawEventDispatcher<$$Events>()
-const handedness = [undefined, undefined]
+const handedness: ['left' | 'right' | undefined, 'left' | 'right' | undefined] = [undefined, undefined]
 
 const handleXrEvent = (event: XREvent) => dispatch(event.type, event)
 
 const setHandedness = (index: number, event: XREvent<'connected'>) => {
-  console.log(index, event)
-  return
-  handedness[index] = event.target
+  handedness[index] = event.data.handedness
 }
 
 </script>
@@ -35,7 +33,6 @@ const setHandedness = (index: number, event: XREvent<'connected'>) => {
   model={modelLeft}
   index={0}
   on:connected={(event) => {
-    console.log('here')
     setHandedness(0, event)
     handleXrEvent(event)
   }}
@@ -47,7 +44,11 @@ const setHandedness = (index: number, event: XREvent<'connected'>) => {
   on:squeezeend={handleXrEvent}
   on:squeezestart={handleXrEvent}
 >
-  <slot name='left' />
+  {#if handedness[0] === 'left'}
+    <slot name='left' />
+  {:else if handedness[0] === 'right'}
+    <slot name='right' />
+  {/if}
 </Controller>
 
 <Controller
@@ -65,5 +66,9 @@ const setHandedness = (index: number, event: XREvent<'connected'>) => {
   on:squeezeend={handleXrEvent}
   on:squeezestart={handleXrEvent}
 >
-  <slot name='right' />
+  {#if handedness[1] === 'left'}
+    <slot name='left' />
+  {:else if handedness[1] === 'right'}
+    <slot name='right' />
+  {/if}
 </Controller>
