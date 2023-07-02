@@ -1,8 +1,8 @@
 <script lang='ts'>
 
 import { createEventDispatcher } from 'svelte'
-import { toggleSession, getSupportState } from './utils'
-import { session, initialized } from './stores'
+import { toggleSession, getSupportState } from '$lib/utils'
+import { session, initialized } from '$lib/stores'
 
 /** The type of `XRSession` to create */
 export let mode: XRSessionMode

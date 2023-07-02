@@ -1,7 +1,5 @@
 <script lang='ts'>
 
-import { tweened } from 'svelte/motion';
-import { cubicOut } from 'svelte/easing';
 import { T } from '@threlte/core'
 
 const fragmentShader = `
@@ -24,11 +22,6 @@ void main(){
 }`
 
 let material: THREE.ShaderMaterial
-
-const size = tweened(1, {
-  duration: 300,
-  easing: cubicOut
-});
 
 </script>
 

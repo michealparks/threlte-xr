@@ -2,7 +2,7 @@
 
 import { createRawEventDispatcher } from '@threlte/core'
 import Hand from './hand.svelte'
-import type { XRHandEvent } from './types'
+import type { XRHandEvent } from '$lib/types'
 
 export let profile: 'mesh' | 'spheres' | 'boxes' | 'none' = 'mesh'
 

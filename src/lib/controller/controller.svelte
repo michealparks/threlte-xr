@@ -1,15 +1,14 @@
 
 <script lang='ts' context='module'>
 
-import { controllers } from './stores';
 import { onMount, onDestroy } from 'svelte'
 import { T, useThrelte, createRawEventDispatcher } from '@threlte/core'
 import { XRControllerModelFactory } from 'three/examples/jsm/webxr/XRControllerModelFactory'
-import { fire } from './events'
-import type { XREvent } from './types'
-import { isHandTracking, activeTeleportController, pendingTeleportDestination } from './stores'
-import { left, right, gaze } from './hooks/use-xr-controller'
-import ShortRay from './rayshort.svelte'
+import { fire } from '$lib/events'
+import type { XREvent } from '$lib/types'
+import { controllers, isHandTracking, activeTeleportController, pendingTeleportDestination } from '$lib/stores'
+import { left, right, gaze } from '$lib/hooks/use-xr-controller'
+import ShortRay from '$lib/rayshort.svelte'
 
 const controllerModelFactory = new XRControllerModelFactory()
 
@@ -57,31 +56,31 @@ const handleConnected = (event: XREvent<'connected'>) => {
     return value
   })
 
+  connected = true
+
+  fire('connected', event)
+  dispatch('connected', event)
+
   switch (event.data.handedness) {
     case 'left': return left.set(xrController)
     case 'right': return right.set(xrController)
     case 'none': return gaze.set(xrController)
   }
-
-  connected = true
-
-  fire('connected', event)
-  dispatch('connected', event)
 }
 
 const handleDisconnected = (event: XREvent<'disconnected'>) => {
   controllers.update((value) => value.filter((item) => item.controller !== controller))
+
+  connected = false
+
+  fire('disconnected', event)
+  dispatch('disconnected', event)
 
   switch (event.data.handedness) {
     case 'left': return left.set(undefined)
     case 'right': return right.set(undefined)
     case 'none': return gaze.set(undefined)
   }
-
-  connected = false
-
-  fire('disconnected', event)
-  dispatch('disconnected', event)
 }
 
 const handleXrEvent = (event: XREvent<typeof xrEvents[number]>) => {
