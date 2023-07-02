@@ -5,7 +5,7 @@ import type { XRInteractionType, XRInteractionHandler, XRController } from './ty
 
 export const initialized = writable(false)
 export const xrFrame = currentWritable<XRFrame>(null!)
-export const session = currentWritable<XRSession | undefined>(undefined!)
+export const session = currentWritable<XRSession | undefined>(undefined)
 export const referenceSpaceType = currentWritable<XRReferenceSpaceType | undefined>(undefined)
 export const player = currentWritable(new THREE.Group())
 export const controllers = writable<XRController[]>([])
@@ -16,7 +16,8 @@ export const hoverState = writable<Record<XRHandedness, Map<THREE.Object3D, THRE
   right: new Map(),
   none: new Map()
 })
-
+export const activeTeleportController = currentWritable<THREE.XRTargetRaySpace | undefined>(undefined)
+export const pendingTeleportDestination = currentWritable<THREE.Vector3 | undefined>(undefined)
 export const events = writable({})
 export const interactions = writable<Map<THREE.Object3D, Record<string, XRInteractionHandler[]>>>(new Map())
 

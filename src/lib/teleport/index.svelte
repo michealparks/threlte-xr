@@ -3,81 +3,88 @@
 <script lang='ts'>
 
 import * as THREE from 'three'
-import { Line2 } from 'three/examples/jsm/lines/Line2'
-import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry'
-import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial'
 import { onMount, afterUpdate } from 'svelte'
-import { T, extend, useFrame } from '@threlte/core'
-import { useController, useTeleport, useXREvent } from '../hooks'
+import { T, useFrame, createRawEventDispatcher } from '@threlte/core'
+import { activeTeleportController, pendingTeleportDestination } from '$lib/stores'
+import { useTeleport, useXrController, useXrGamepad } from '$lib/hooks'
+import Ray from '$lib/ray.svelte'
 import Marker from './marker.svelte'
-import type { XREvent } from '$lib/types';
 
-extend({ Line2, LineGeometry, LineMaterial })
-
+// export let intersects: THREE.Object3D[] = []
 export let raycaster = new THREE.Raycaster()
+export let handedness: 'left' | 'right' = 'right'
 
-let hasIntersection = false
+type $$Events = {
+  teleport: THREE.Vector3
+}
+
+const dispatch = createRawEventDispatcher<$$Events>()
+
 let navmeshParent: THREE.Group
-let lineGeometry: LineGeometry
-let interactObjects: THREE.Object3D[] = []
-let selectingController: THREE.XRTargetRaySpace | undefined
+let navMeshes: THREE.Object3D[] = []
 let destination: THREE.Vector3 | undefined
+let activeController: THREE.XRTargetRaySpace | undefined
 
 const teleport = useTeleport()
+const controllerPosition = new THREE.Vector3()
 const matrix4 = new THREE.Matrix4()
-const midpoint = new THREE.Vector3()
-const point = new THREE.Vector3()
-const divisions = 40
-const positions = new Float32Array(divisions * 3)
+const rayMidpoint = new THREE.Vector3()
+const rayDivisions = 40
+const positions = new Float32Array(rayDivisions * 3)
+const curve = new THREE.QuadraticBezierCurve3()
+const curvePoint = new THREE.Vector3()
 
-const calculateMidpoint = (vector1: THREE.Vector3, vector2: THREE.Vector3) => {
-  midpoint.x = (vector1.x + vector2.x) / 2;
-  midpoint.y = (vector1.y + vector2.y) / 2;
-  midpoint.z = (vector1.z + vector2.z) / 2;
+$: teleportController = useXrController(handedness)
+$: teleportGamepad = useXrGamepad(handedness)
+
+const calculateRayMidpoint = (vector1: THREE.Vector3, vector2: THREE.Vector3) => {
+  rayMidpoint.x = (vector1.x + vector2.x) / 2;
+  rayMidpoint.y = (vector1.y + vector2.y) / 2;
+  rayMidpoint.z = (vector1.z + vector2.z) / 2;
 }
 
 const { start, stop } = useFrame(() => {
-  if (selectingController === undefined) return
+  if (activeController === undefined) return
 
-  hasIntersection = false
-  destination = undefined
-
-  matrix4.identity().extractRotation(selectingController.matrixWorld)
-  raycaster.ray.origin.setFromMatrixPosition(selectingController.matrixWorld)
+  matrix4.identity().extractRotation(activeController.matrixWorld)
+  raycaster.ray.origin.setFromMatrixPosition(activeController.matrixWorld)
   raycaster.ray.direction.set(0, 0, -1).applyMatrix4(matrix4)
 
-  const [intersect] = raycaster.intersectObjects(interactObjects)
+  const [intersect] = raycaster.intersectObjects(navMeshes)
 
-  if (intersect === undefined) return
-
-  hasIntersection = true
-  destination = intersect.point
-
-  const controllerpos = new THREE.Vector3()
-  selectingController.getWorldPosition(controllerpos)
-
-  calculateMidpoint(controllerpos, destination)
-  midpoint.y += 0.8
-  const curve = new THREE.QuadraticBezierCurve3(
-    controllerpos,
-    midpoint,
-    destination
-  )
-
-  for (let i = 0, j = 0; i < divisions; i += 1, j += 3) {
-    const t = i / divisions;
-    curve.getPoint(t, point)
-    positions[j + 0] = point.x
-    positions[j + 1] = point.y
-    positions[j + 2] = point.z
+  if (intersect === undefined) {
+    destination = undefined
+    $pendingTeleportDestination = undefined
+    return
   }
 
-  lineGeometry.setPositions(positions)
+  destination = intersect.point
+  $pendingTeleportDestination = destination
+
+  activeController.getWorldPosition(controllerPosition)
+
+  calculateRayMidpoint(controllerPosition, destination)
+
+  // Create an arc
+  rayMidpoint.y += 0.8
+
+  curve.v0.copy(controllerPosition)
+  curve.v1.copy(rayMidpoint)
+  curve.v2.copy(intersect.point)
+
+  for (let i = 0, j = 0; i < rayDivisions; i += 1, j += 3) {
+    const t = i / rayDivisions;
+    curve.getPoint(t, curvePoint)
+    positions[j + 0] = curvePoint.x
+    positions[j + 1] = curvePoint.y
+    positions[j + 2] = curvePoint.z
+  }
 
 }, { autostart: false })
 
-const handleSelectStart = (event: XREvent) => {
-  selectingController = event.target
+const handleSelectStart = (controller: THREE.XRTargetRaySpace) => {
+  activeController = controller
+  $activeTeleportController = controller
 
   start()
 }
@@ -85,62 +92,69 @@ const handleSelectStart = (event: XREvent) => {
 const handleSelectEnd = () => {
   stop()
 
-  hasIntersection = false
-  selectingController = undefined
+  activeController = undefined
+  $activeTeleportController = undefined
 
-  if (destination === undefined) return
-
-  teleport(destination)
+  if (destination !== undefined) {
+    teleport(destination)
+    dispatch('teleport', destination)
+  }
 }
 
-const left = useController('left')
+useFrame(() => {
+  const selecting = (teleportGamepad.current?.axes[3] ?? 0) < -0.9
 
-console.log(left.current?.inputSource.gamepad)
-
-useXREvent('selectstart', handleSelectStart)
-useXREvent('selectend', handleSelectEnd)
+  if (selecting && activeController === undefined) {
+    handleSelectStart(teleportController.current!.controller)
+  } else if (!selecting && activeController !== undefined) {
+    handleSelectEnd()
+  }
+})
 
 afterUpdate(() => {
-  interactObjects = navmeshParent.children
+  navMeshes = navmeshParent.children
 })
 
 onMount(() => {
-  interactObjects = navmeshParent.children
+  navMeshes = navmeshParent.children
 })
 
 </script>
 
 <!--
-### Teleport
+@component
 
-A teleportation plane with a marker that will teleport on interaction.
+`<TeleportControls />` creates a teleportation experience similar to that on the Quest home environment.
+
+@param handedness - Which hands to allow teleportation from.
+
+@param maxDistance - The maximum radial teleportation distance in meters.
+
+@param transition - Enables / disabling teleport transitions. Disabling is not-recommended due to VR sickness.
+
+@event teleport - Fires after a teleport event.
 
 ```svelte
-  <Teleport
-    /** Whether to allow teleportation from left controller. Default is `false` */
-    leftHand={false}
-    /** Whether to allow teleportation from right controller. Default is `false` */
-    rightHand={false}
-    /** The maximum distance from the camera to the teleportation point. Default is `10` */
+  <TeleportControls
+    handedness={['left']}
     maxDistance={10}
-    /** The radial size of the teleportation marker. Default is `0.25` */
-    size={0.25}
-  >
-
-  </Teleport>
+    transition={true | false}
+    on:teleport={(event) => {}} 
+  />
 ```
 -->
+
 <T.Group bind:ref={navmeshParent}>
   <slot />
 </T.Group>
 
-<T.Line2>
-  <T.LineGeometry bind:ref={lineGeometry} />
-  <T.LineMaterial color='white' linewidth={0.004} />
-</T.Line2>
+<Ray
+  visible={activeController !== undefined && destination !== undefined}
+  {positions}
+/>
 
 <Marker
-  open={hasIntersection}
+  visible={activeController !== undefined && destination !== undefined}
   position.x={destination?.x}
   position.y={destination?.y}
   position.z={destination?.z}

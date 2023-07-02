@@ -2,7 +2,7 @@
 
 import * as THREE from 'three'
 import { T, useThrelte } from '@threlte/core'
-import { XR, Teleport, Controllers, Hands, useTeleport } from '$lib'
+import { XR, TeleportControls, Controllers, Hands, useTeleport } from '$lib'
 
 const { camera, renderer } = useThrelte()
 const teleport = useTeleport()
@@ -21,12 +21,12 @@ teleport(new THREE.Vector3(0.5, 0, 0.5))
   <Hands />
 </XR>
 
-<Teleport>
+<TeleportControls>
   <T.Mesh rotation={[-Math.PI / 2, 0, 0]}>
     <T.CircleGeometry args={[5]} />
     <T.MeshStandardMaterial color='#444' />
   </T.Mesh>
-</Teleport>
+</TeleportControls>
 
 <T.AmbientLight />
 <T.DirectionalLight />

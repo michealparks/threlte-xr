@@ -1,3 +1,4 @@
+
 <script lang='ts' context='module'>
 
 import { controllers } from './stores';
@@ -6,24 +7,11 @@ import { T, useThrelte, createRawEventDispatcher } from '@threlte/core'
 import { XRControllerModelFactory } from 'three/examples/jsm/webxr/XRControllerModelFactory'
 import { fire } from './events'
 import type { XREvent } from './types'
-import { isHandTracking } from './stores'
-import Ray from './ray.svelte'
+import { isHandTracking, activeTeleportController, pendingTeleportDestination } from './stores'
+import { left, right, gaze } from './hooks/use-xr-controller'
+import ShortRay from './rayshort.svelte'
 
 const controllerModelFactory = new XRControllerModelFactory()
-
-</script>
-
-<script lang='ts'>
-
-export let index: number
-
-export let ray = false
-
-/** Optional material props to pass to controllers' ray indicators */
-export const rayMaterial: THREE.MeshBasicMaterial | undefined = undefined
-
-/** Whether to hide controllers' rays on blur. Default is `false` */
-export const hideRaysOnBlur: boolean = false
 
 const xrEvents = [
   'select',
@@ -33,6 +21,12 @@ const xrEvents = [
   'squeezeend',
   'squeezestart'
 ] as const
+
+</script>
+
+<script lang='ts'>
+
+export let index: number
 
 type $$Events = {
   connected: XREvent<'connected'>
@@ -53,17 +47,40 @@ const grip = renderer!.xr.getControllerGrip(index)
 
 export let model: THREE.Object3D | undefined = controllerModelFactory.createControllerModel(grip)
 
+let connected = false
+
 const handleConnected = (event: XREvent<'connected'>) => {
-  $controllers[index] = { controller, inputSource: event.data }
-  controller.visible = grip.visible = true
-  fire(event.type, event)
+  const xrController = { controller, inputSource: event.data }
+
+  controllers.update((value) => {
+    value[index] = xrController
+    return value
+  })
+
+  switch (event.data.handedness) {
+    case 'left': return left.set(xrController)
+    case 'right': return right.set(xrController)
+    case 'none': return gaze.set(xrController)
+  }
+
+  connected = true
+
+  fire('connected', event)
   dispatch('connected', event)
 }
 
 const handleDisconnected = (event: XREvent<'disconnected'>) => {
   controllers.update((value) => value.filter((item) => item.controller !== controller))
-  controller.visible = grip.visible = false
-  fire(event.type, event)
+
+  switch (event.data.handedness) {
+    case 'left': return left.set(undefined)
+    case 'right': return right.set(undefined)
+    case 'none': return gaze.set(undefined)
+  }
+
+  connected = false
+
+  fire('disconnected', event)
   dispatch('disconnected', event)
 }
 
@@ -90,17 +107,22 @@ onDestroy(() => {
 
 </script>
 
-<T is={grip} name='XR Controller Grip {index}'>
+<T
+  is={grip}
+  name='XR Controller Grip {index}'
+  visible={connected && !$isHandTracking}
+>
   <T is={model} name='XR Controller Grip Model {index}' />
   <slot />
 </T>
 
-<T is={controller} name='XR Controller {index}'>
-  {#if ray}
-    <Ray
-      visible={!$isHandTracking}
-      hideOnBlur={hideRaysOnBlur}
-      material={rayMaterial}
-    />
-  {/if}
+<T
+  is={controller}
+  name='XR Controller {index}'
+  visible={connected && !$isHandTracking}
+>
+  <ShortRay visible={
+    $activeTeleportController === controller &&
+    $pendingTeleportDestination === undefined
+  } />
 </T>

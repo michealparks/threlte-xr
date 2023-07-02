@@ -18,9 +18,9 @@ npm install threlte-xr
 - [x] Controller and Hand features
   - [x] Events
   - [ ] Custom hand models and children
-- [ ] Teleporting
+- [x] Teleporting
   - [x] Hook
-  - [ ] Teleport component
+  - [x] TeleportControls
 - [ ] Smooth movement
 - [ ] Interactive objects
 - [ ] Works smoothly with @threlte/rapier
@@ -145,22 +145,12 @@ This hook gives you access to the current state configured by `<XR />`.
 import { useXR } from 'threlte-xr'
 
 const {
-  // An array of connected `XRController`
-  controllers,
-  // Whether the XR device is presenting in an XR session
-  isPresenting,
-  // Whether hand tracking inputs are active
-  isHandTracking,
-  // A THREE.Group representing the XR viewer or player
-  player,
-  // The active `XRSession`
-  session,
-  // `XRSession` foveation. This can be configured as `foveation` on <XR>. Default is `0`
-  foveation,
-  // `XRSession` reference-space type. This can be configured as `referenceSpace` on <XR>. Default is `local-floor`
-  referenceSpace,
-  // The current XRFrame
-  xrFrame,
+  controllers, // Writable<XRController[]>
+  isPresenting, // CurrentWritable<boolean> - Whether the XR device is presenting in an XR session
+  isHandTracking, // CurrentWritable<boolean> - Whether hand tracking inputs are active
+  player, // CurrentWritable<THREE.Group> - Representing the XR viewer or player
+  session, // CurrentWritable<XRSession | undefined> - The active `XRSession`
+  xrFrame, // CurrentWritable<XRFrame> - The current XRFrame
 } = useXR()
 ```
 
@@ -182,11 +172,6 @@ Controllers can be added with `<Controllers />` for [motion-controllers](https:/
   on:squeezestart={(event) => {}}
 />
 
-<!-- Can accept children -->
-<Controllers>
-  <T slot='left' is={$gltf.scene} />
-</Controllers>
-
 <Hands
   profile={'mesh' | 'spheres' | 'boxes' | 'none'}
   on:connected={(event) => {}}
@@ -196,27 +181,41 @@ Controllers can be added with `<Controllers />` for [motion-controllers](https:/
 />
 ```
 
-### useXRFrame
-> **Warning**
-> `useXRFrame` is available because threlte's `useFrame` does not currently work during an XRSession. This may not be the case in the future, and if so it will likely be first deprecated and later removed.
+`Controllers` and `Hands` can optionally have children attached to their `Object3d`s.
 
-```ts
-import { useXRFrame } from 'threlte-xr'
-
-useXRFrame((frame: XRFrame, dt: number) => {
-
-})
+```svelte
+<Controllers>
+  <T slot='left' is={$gltf1.scene} />
+  <T slot='right' is={$gltf2.scene} />
+</Controllers>
 ```
 
+### useXrController
 
-### useController
-
-`useController` references an `XRController` by handedness, exposing position and orientation info.
+`useXrController` returns a `currentWritable` of an `XRController` by handedness, exposing position and orientation info.
 
 ```ts
-const leftController = useController('left')
-const rightController = useController('right')
-const gazeController = useController('none')
+const leftController = useXrController('left')
+const rightController = useXrController('right')
+const gazeController = useXrController('none')
+
+console.log(leftController.current)
+```
+
+### useXrGamepad
+
+`useXrGamepad` is a convenience hook that returns a `currentWritable` to easily reference an `XRController`'s gamepad.
+
+```ts
+// Instead of...
+const leftController = useXrController('left')
+$: gamepad = leftController?.inputSource.gamepad
+
+// Do this...
+const leftController = useXrController('left')
+const leftGamepad = useXrGamepad('left')
+
+console.log(leftGamepad.current)
 ```
 
 ### useXREvent
@@ -235,18 +234,50 @@ useXREvent('squeeze', (event: XRControllerEvent) => {}, {
 })
 ```
 
+## Movement
+
+### TeleportControls
+
+The `<TeleportControls>` component allows the creation of a teleportation experience that is meant to closely mirror those found in many games - such as Half Life: Alyx - as well as the Quest home environment.
+
+Adding the `<TeleportControls>` component to a scene will enabled spawning a teleport indicator if the gamepad's joystick is pushed forward. Users will then be able to teleport to any area specified by one or more navigation meshes that are provided as children to this component.
+
+```svelte
+<TeleportControls
+  on:teleport={(destination) => { /* Occurs after a teleportation */ }}
+>
+  <!--
+    Creates a circular navmesh that the user can teleport on.
+    These can be visible or invisible objects.
+  -->
+  <T.Mesh rotation={[-Math.PI / 2, 0, 0]}>
+    <T.CircleGeometry args={[5]} />
+    <T.MeshStandardMaterial color='#fff' />
+  </T.Mesh>
+</TeleportControls>
+```
+
 ### useTeleport
 
-`useTeleport` returns a `teleport` function, which allows you to move the reference frame of the user to a desired position.
+`useTeleport` is a low-level hook that returns a `teleport` function, which allows you to move the reference frame of the user to a desired position.
 
 ```ts
 const teleport = useTeleport()
 const vector3 = new THREE.Vector3()
 
-// The desired destination
+// The desired position
 vector3.set(10, 0, -5)
 
 teleport(vector3)
+```
+
+`useTeleport` Can be used with `useFrame` for smooth movement.
+
+```ts
+useFrame(() => {
+  vector3.z += 0.1
+  teleport(vector3)
+})
 ```
 
 ### Custom XRButton
@@ -269,4 +300,14 @@ const button = document.createElement('button')
 button.innerText = 'Enter VR'
 button.addEventListener('click', handleClick)
 document.appendChild(button)
+```
+
+## AR
+
+### useHitTest
+
+Use hook during an `immersive-ar` session to recieve hit test results on each frame.
+
+```ts
+useHitTest((hitMatrix: THREE.Matrix4, hit: XRHitTestResult) => {})
 ```

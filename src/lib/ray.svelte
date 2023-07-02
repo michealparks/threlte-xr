@@ -1,41 +1,42 @@
-<script lang='ts'>
+<script lang='ts' context='module'>
 
-import * as THREE from 'three'
-import { T } from '@threlte/core'
-import { useFrame } from '@threlte/core'
-// import { hoverState } from './stores'
+import { T, extend } from '@threlte/core'
+import { Line2 } from 'three/examples/jsm/lines/Line2'
+import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry'
+import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial'
 
-/** The XRController to attach the ray to */
-// export let target: XRController
-
-/** Whether to hide the ray on controller blur. Default is `false` */
-// export let hideOnBlur: boolean = false
-
-let ref: THREE.Line
-
-const geometry = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, 0, 0), new THREE.Vector3(0, 0, -1)])
-
-// Show ray line when hovering objects
-useFrame(() => {
-  let rayLength = 1
-
-  // const intersection: THREE.Intersection = $hoverState[target.inputSource.handedness].values().next().value
-
-  // if (intersection && target.inputSource.handedness !== 'none') {
-  //   rayLength = intersection.distance
-  //   if (hideOnBlur) ray.visible = false
-  // } else if (hideOnBlur) {
-  //   ray.visible = true
-  // }
-
-  // Tiny offset to clip ray on AR devices
-  // that don't have handedness set to 'none'
-  const offset = -0.01
-  ref.scale.z = rayLength + offset
-}, { autostart: false })
+extend({ Line2, LineGeometry, LineMaterial })
 
 </script>
 
-<T.Line bind:ref {...$$props} {geometry}>
-  <T.MeshBasicMaterial transparent opacity={0.8} />
-</T.Line>
+<script lang='ts'>
+
+export let positions = new Float32Array([0, 0, 0, 0, 0, -0.3])
+export let colors: Float32Array | undefined = undefined
+export let length = 1
+export let color = 'white'
+export let transparent = false
+
+const lineGeometry = new LineGeometry()
+
+$: lineGeometry.setPositions(positions)
+
+$: if (colors !== undefined) {
+  lineGeometry.setColors(colors)
+}
+
+</script>
+
+<T.Line2
+  {...$$restProps}
+  scale.z={length}
+  position.z={-0.01}
+>
+  <T is={lineGeometry} />
+  <T.LineMaterial
+    {color}
+    {transparent}
+    vertexColors={colors !== undefined}
+    linewidth={0.004}
+  />
+</T.Line2>
