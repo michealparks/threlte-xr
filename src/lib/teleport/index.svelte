@@ -11,8 +11,23 @@ import Ray from '$lib/ray.svelte'
 import Marker from './marker.svelte'
 
 // export let intersects: THREE.Object3D[] = []
+
+/**
+ * The raycaster used for teleportation.
+ */
 export let raycaster = new THREE.Raycaster()
+
+/**
+ * The controller handedness that the teleport controls can originate from.
+ * @default right
+ */
 export let handedness: 'left' | 'right' = 'right'
+
+/**
+ * The maximum teleporting distance from the user's current origin, in meters.
+ * @default 20
+ */
+export let maxDistance = 20
 
 type $$Events = {
   teleport: THREE.Vector3
@@ -34,6 +49,7 @@ const positions = new Float32Array(rayDivisions * 3)
 const curve = new THREE.QuadraticBezierCurve3()
 const curvePoint = new THREE.Vector3()
 
+$: raycaster.far = maxDistance
 $: teleportController = useXrController(handedness)
 $: teleportGamepad = useXrGamepad(handedness)
 
@@ -130,15 +146,12 @@ onMount(() => {
 
 @param maxDistance - The maximum radial teleportation distance in meters.
 
-@param transition - Enables / disabling teleport transitions. Disabling is not-recommended due to VR sickness.
-
 @event teleport - Fires after a teleport event.
 
 ```svelte
   <TeleportControls
-    handedness={['left']}
+    handedness={'left' | 'right'}
     maxDistance={10}
-    transition={true | false}
     on:teleport={(event) => {}} 
   />
 ```

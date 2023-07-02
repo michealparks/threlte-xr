@@ -1,6 +1,6 @@
 {
 	"name": "threlte-xr",
-	"version": "0.0.17",
+	"version": "0.0.18",
 	"license": "MIT",
 	"scripts": {
 		"start": "vite dev --host",
@@ -36,7 +36,7 @@
 		"@types/three": "^0.152.1",
 		"autoprefixer": "^10.4.14",
 		"postcss": "^8.4.24",
-		"publint": "^0.1.13",
+		"publint": "^0.1.15",
 		"svelte": "^4.0.1",
 		"svelte-check": "^3.4.4",
 		"tailwindcss": "^3.3.2",

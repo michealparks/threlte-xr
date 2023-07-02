@@ -21,9 +21,9 @@ teleport(new THREE.Vector3(0.5, 0, 0.5))
   <Hands />
 </XR>
 
-<TeleportControls>
+<TeleportControls handedness='left'>
   <T.Mesh rotation={[-Math.PI / 2, 0, 0]}>
-    <T.CircleGeometry args={[5]} />
+    <T.CircleGeometry args={[20]} />
     <T.MeshStandardMaterial color='#444' />
   </T.Mesh>
 </TeleportControls>
