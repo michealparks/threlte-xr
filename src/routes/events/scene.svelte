@@ -19,18 +19,18 @@ camera.current.lookAt(0, 1.75, 1)
   on:sessionend={(event) => console.log('sessionend', event)}
   on:visibilitychange={(event) => console.log('visibilitychange', event)}
   on:inputsourceschange={(event) => console.log('inputsourceschange', event)}
-/>
+>
+  <Controllers
+    on:connected={(event) => console.log('connected', event)}
+    on:disconnected={(event) => console.log('disconnected', event)}
+    on:select={(event) => console.log('select', event)}
+  />
 
-<Controllers
-  on:connected={(event) => console.log('connected', event)}
-  on:disconnected={(event) => console.log('disconnected', event)}
-  on:select={(event) => console.log('select', event)}
-/>
-
-<Hands
-  on:connected={(event) => console.log('connected', event)}
-  on:disconnected={(event) => console.log('disconnected', event)}
-/>
+  <Hands
+    on:connected={(event) => console.log('connected', event)}
+    on:disconnected={(event) => console.log('disconnected', event)}
+  />
+</XR>
 
 <T.Mesh rotation={[-Math.PI / 2, 0, 0]}>
   <T.CircleGeometry args={[1]} />

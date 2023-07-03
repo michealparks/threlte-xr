@@ -1,7 +1,7 @@
 <script lang='ts' context='module'>
 
 import { onMount, onDestroy } from 'svelte'
-import { T, useThrelte, createRawEventDispatcher } from '@threlte/core'
+import { T, useThrelte, createRawEventDispatcher, useFrame } from '@threlte/core'
 import { XRHandModelFactory } from 'three/examples/jsm/webxr/XRHandModelFactory'
 import type { XRHandEvent } from '$lib/types'
 import { fire } from '$lib/events'
@@ -29,8 +29,12 @@ const { renderer } = useThrelte()
 const hand = renderer!.xr.getHand(index)
 const model = handModelFactory.createHandModel(hand, profile === 'none' ? 'mesh' : profile)
 
+let connected = false
+let inputSource: XRHand | undefined
+
 const handleConnectionUpdate = (event: XRHandEvent) => {
-  const connected = event.type === 'connected'
+  inputSource = event.data.hand
+  connected = event.type === 'connected'
   hand.visible = connected
   dispatch(event.type, event)
 }
@@ -54,11 +58,43 @@ onDestroy(() => {
   hand.removeEventListener('pinchend', handlePinchEvent)
 })
 
+const space = renderer!.xr.getReferenceSpace()
+
+let children: THREE.Group
+
+const { start, stop } = useFrame(() => {
+  const frame = renderer!.xr.getFrame()
+  const joint = inputSource?.get('wrist' as unknown as number)
+
+  if (joint === undefined || space === null) return 
+
+  const pose = frame?.getJointPose?.(joint, space)
+
+  if (pose === undefined) return
+
+  const { position, orientation } = pose.transform
+  children.position.set(position.x, position.y, position.z)
+  children.quaternion.set(orientation.x, orientation.y, orientation.z, orientation.w)
+}, { autostart: false })
+
+$: if ($$slots.default) { start() } else { stop() }
+
 </script>
 
-<T is={hand} name='XR Hand {index}'>
+<T
+  is={hand}
+  name='XR Hand {index}'
+  visible={connected}
+>
   {#if profile !== 'none'}
     <T is={model} name='XR Hand Model {index}' />
   {/if}
-  <slot />
+
+  <T.Group bind:ref={children}>
+    <T.Group rotation.x={Math.PI / 2}>
+      <slot />
+    </T.Group>
+  </T.Group>
 </T>
+
+

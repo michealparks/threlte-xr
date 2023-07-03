@@ -17,7 +17,8 @@ npm install threlte-xr
 - [x] XR Manager
 - [x] Controller and Hand features
   - [x] Events
-  - [ ] Custom hand models and children
+  - [ ] Custom hand models
+  - [x] Hand children
 - [x] Teleporting
   - [x] Hook
   - [x] TeleportControls

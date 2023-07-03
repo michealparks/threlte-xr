@@ -2,7 +2,7 @@
 
 import * as THREE from 'three'
 import { T, useThrelte } from '@threlte/core'
-import { XR, Controllers, Hand } from '$lib'
+import { XR, Controllers, Hands } from '$lib'
 
 const { camera } = useThrelte()
 
@@ -31,13 +31,14 @@ const handlePinchEnd = () => {
 
 </script>
 
-<XR />
-<Controllers />
-<Hand
-  index={0}
-  on:pinchstart={handlePinchStart}
-  on:pinchend={handlePinchEnd}
-/>
+<XR foveation={1}>
+  <Controllers />
+
+  <Hands
+    on:pinchstart={handlePinchStart}
+    on:pinchend={handlePinchEnd}
+  />
+</XR>
 
 <T.Mesh rotation={[-Math.PI / 2, 0, 0]}>
   <T.CircleGeometry args={[1]} />

@@ -6,6 +6,7 @@ const demos = [
   ['Custom controller models', '/models'],
   ['Teleporting', '/teleport'],
   ['Immersive AR', '/ar'],
+  ['BonkSaber', '/bonksaber'],
 ] as const
 
 </script>
