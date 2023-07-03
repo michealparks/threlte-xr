@@ -9,13 +9,12 @@ import Scene from './scene.svelte'
 
 <Canvas>
   <World gravity={[0, 0, 0]}>
-    <Debug />
+    {#if localStorage.getItem('debug-physics')}
+      <Debug />
+    {/if}
     <Scene />
   </World>
 </Canvas>
 
-<VRButton
-  on:click={(event) => console.log('vr button click', event)}
-  on:error={(event) => console.log('vr button error', event)}
-/>
+<VRButton />
   

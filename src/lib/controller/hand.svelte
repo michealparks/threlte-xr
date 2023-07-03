@@ -91,9 +91,7 @@ $: if ($$slots.default) { start() } else { stop() }
   {/if}
 
   <T.Group bind:ref={children}>
-    <T.Group rotation.x={Math.PI / 2}>
-      <slot />
-    </T.Group>
+    <slot />
   </T.Group>
 </T>
 

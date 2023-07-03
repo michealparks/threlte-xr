@@ -2,7 +2,7 @@
 
 import * as THREE from 'three'
 import { T } from '@threlte/core'
-import { toCreasedNormals } from 'three/examples/jsm/utils/BufferGeometryUtils'
+import { toCreasedNormals } from './to-creased-normals'
 
 export let args: [width?: number, height?: number, depth?: number] | [] = []
 export let radius = 0.05
@@ -44,7 +44,7 @@ $: params = {
 <T.ExtrudeGeometry
   args={[shape, params]}
   on:create={({ ref }) => {
-      ref.center()
+    ref.center()
     toCreasedNormals(ref, creaseAngle)
   }}
 />
