@@ -21,14 +21,21 @@ camera.current.lookAt(0, 1.75, 1)
   on:inputsourceschange={(event) => console.log('inputsourceschange', event)}
 >
   <Controllers
-    on:connected={(event) => console.log('connected', event)}
-    on:disconnected={(event) => console.log('disconnected', event)}
+    on:connected={(event) => console.log('connected:controller', event)}
+    on:disconnected={(event) => console.log('disconnected:controller', event)}
     on:select={(event) => console.log('select', event)}
+    on:selectstart={(event) => console.log('selectstart', event)}
+    on:selectend={(event) => console.log('selectend', event)}
+    on:squeeze={(event) => console.log('squeeze', event)}
+    on:squeezestart={(event) => console.log('squeezestart', event)}
+    on:squeezeend={(event) => console.log('squeezeend', event)}
   />
 
   <Hands
-    on:connected={(event) => console.log('connected', event)}
-    on:disconnected={(event) => console.log('disconnected', event)}
+    on:connected={(event) => console.log('connected:controller', event)}
+    on:disconnected={(event) => console.log('disconnected:controller', event)}
+    on:pinchstart={(event) => console.log('pinchstart', event)}
+    on:pinchend={(event) => console.log('pinchend', event)}
   />
 </XR>
 
