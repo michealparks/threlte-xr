@@ -74,7 +74,7 @@ const getRandomForce = (force) => {
 
 <InstancedMesh limit={numCubes}>
   <RoundedBoxGeometry radius={boxRadius} args={[boxSize, boxSize, boxSize]} />
-  <T.MeshPhongMaterial />
+  <T.MeshStandardMaterial roughness={0} metalness={0.2} />
 
   {#each cubes as { position, color }, index (index)}
     <T.Group

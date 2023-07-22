@@ -41,10 +41,12 @@ const dispatch = createRawEventDispatcher<$$Events>()
 
 const { renderer, camera } = useThrelte()
 
+const { xr } = renderer!
+
 let cleanup: () => void = () => {}
 
 const { start, stop } = useFrame((_ctx, dt) => {
-  const frame = renderer!.xr.getFrame()
+  const frame = xr.getFrame()
   xrFrame.set(frame)
   for (let callback of xrRenderCallbacks) {
     callback(frame, dt)
@@ -73,11 +75,11 @@ const handleInputSourcesChange = (event: XRInputSourceChangeEvent) => {
   dispatch('inputsourceschange', { ...event, target: $session! })
 }
 
-renderer!.xr.enabled = true
-renderer!.xr.addEventListener('sessionstart', handleSessionStart)
-renderer!.xr.addEventListener('sessionend', handleSessionEnd)
+xr.enabled = true
+xr.addEventListener('sessionstart', handleSessionStart)
+xr.addEventListener('sessionend', handleSessionEnd)
 
-$: renderer!.xr.setFoveation(foveation)
+$: xr.setFoveation(foveation)
 
 $: if (frameRate !== undefined) {
   try {
@@ -86,7 +88,7 @@ $: if (frameRate !== undefined) {
 }
 
 $: {
-  renderer!.xr.setReferenceSpaceType(referenceSpace)
+  xr.setReferenceSpaceType(referenceSpace)
   $referenceSpaceType = referenceSpace
 }
 
@@ -94,15 +96,15 @@ $: {
   cleanup()
 
   if ($session === undefined) {
-    renderer!.xr.setSession(null)
+    xr.setSession(null)
   } else {
     $session.addEventListener('visibilitychange', handleVisibilityChange)
     $session.addEventListener('inputsourceschange', handleInputSourcesChange)
 
-    renderer!.xr.setSession($session!).then(() => {
+    xr.setSession($session!).then(() => {
       // on setSession, three#WebXRManager resets foveation to 1
       // so foveation set needs to happen after it
-      renderer!.xr.setFoveation(foveation)
+      xr.setFoveation(foveation)
     })
 
     cleanup = () => {
@@ -113,10 +115,9 @@ $: {
 }
 
 onDestroy(() => {
-  renderer!.xr.enabled = false
-  renderer!.xr.removeEventListener('sessionstart', handleSessionStart)
-  renderer!.xr.removeEventListener('sessionend', handleSessionEnd)
-  renderer!.setAnimationLoop(null)
+  xr.enabled = false
+  xr.removeEventListener('sessionstart', handleSessionStart)
+  xr.removeEventListener('sessionend', handleSessionEnd)
 })
 
 $initialized = true
