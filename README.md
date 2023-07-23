@@ -221,18 +221,26 @@ console.log(leftGamepad.current)
 
 ### useXREvent
 
-To handle controller events that are not bound to any object in the scene you can use `useXREvent` hook. This is a low-level abstraction that subscribes directly into the native XRInputSource (see [`XRInputSourceEvent`](https://developer.mozilla.org/en-US/docs/Web/API/XRInputSourceEvent#event_types)).
+To handle controller events that are not bound to any object in the scene you can use `useXRControllerEvent` hook. This is a low-level abstraction that subscribes directly into the native XRInputSource (see [`XRInputSourceEvent`](https://developer.mozilla.org/en-US/docs/Web/API/XRInputSourceEvent#event_types)).
 
 ```ts
-useXREvent('squeeze', (event: XRControllerEvent) => {})
+useXRControllerEvent('squeeze', (event: XRControllerEvent) => {})
 ```
 
-It supports an optional third parameter with options for filtering by handedness.
+It supports an optional third parameter with options for filtering by handedness or input.
+
+By default, no filtering occurs.
 
 ```ts
-useXREvent('squeeze', (event: XRControllerEvent) => {}, {
-  handedness: 'left' | 'right' | 'none'
+useXRControllerEvent('squeeze', (event: XRControllerEvent) => {}, {
+  handedness: 'left' | 'right' | 'none',
 })
+```
+
+Hand events are also supported with the `useXRHandEvent`.
+
+```ts
+useXRHandEvent('pinchstart', (event: XRHandEvent) => {})
 ```
 
 ## Movement

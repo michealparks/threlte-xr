@@ -1,12 +1,16 @@
 <script lang='ts'>
 
 import { T, useThrelte } from '@threlte/core'
-import { XR, Controllers, Hands, useXREvent } from '$lib'
+import { XR, Controllers, Hands, useXRControllerEvent, useXRHandEvent } from '$lib'
   
 const { camera } = useThrelte()
 
-useXREvent('select', (event) => console.log('useXREvent select', event), {
+useXRControllerEvent('select', (event) => console.log('useXRControllerEvent', event), {
   handedness: 'right'
+})
+
+useXRHandEvent('pinchstart', (event) => console.log('useXRHandEvent', event), {
+  handedness: 'left'
 })
 
 camera.current.position.z = 1.75
