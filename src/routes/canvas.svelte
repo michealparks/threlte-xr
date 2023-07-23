@@ -5,9 +5,7 @@ import { VRButton } from '$lib'
 
 </script>
 
-<Canvas
-  useLegacyLights={false}
->
+<Canvas useLegacyLights={false}>
   <slot />
 </Canvas>
 

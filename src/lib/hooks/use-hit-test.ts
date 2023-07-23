@@ -1,17 +1,18 @@
 import * as THREE from 'three'
 import { onDestroy } from 'svelte'
 import { session } from '$lib/stores'
+import type { HitTestCallback } from '$lib/types'
 import { useThrelte, useFrame } from '@threlte/core'
-
-export type HitTestCallback = (hitMatrix: THREE.Matrix4, hit: XRHitTestResult) => void
 
 /**
  * Use this hook to perform a hit test for an AR environment.
  *
  * @param hitTestCallback 
  */
-export const useHitTest = (hitTestCallback: HitTestCallback) => {
+export const useHitTest = (hitTestCallback: HitTestCallback): void => {
   const { renderer } = useThrelte()
+  const { xr } = renderer!
+
   const hitMatrix = new THREE.Matrix4()
 
   let hitTestSource: XRHitTestSource | undefined
@@ -28,7 +29,7 @@ export const useHitTest = (hitTestCallback: HitTestCallback) => {
   })
 
   const { stop } = useFrame(() => {
-    const frame = renderer!.xr.getFrame()
+    const frame = xr.getFrame()
 
     if (hitTestSource === undefined) return
 
@@ -36,7 +37,7 @@ export const useHitTest = (hitTestCallback: HitTestCallback) => {
 
     if (hit === undefined) return
     
-    const referenceSpace = renderer!.xr.getReferenceSpace()
+    const referenceSpace = xr.getReferenceSpace()
 
     if (referenceSpace === null) return
 

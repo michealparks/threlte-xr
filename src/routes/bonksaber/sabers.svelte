@@ -54,7 +54,7 @@ const saberLength = 1.4
     on:create={({ ref }) => (sabers.right = ref)}
   >
     <T.CylinderGeometry args={[saberRadius, saberRadius, saberLength]} />
-    <T.MeshPhongMaterial color='red' />
+    <T.MeshStandardMaterial roughness={0} color='red' />
   </T.Mesh>
 </Controllers>
 
@@ -66,7 +66,7 @@ const saberLength = 1.4
     on:create={({ ref }) => (handSabers.left = ref)}
   >
     <T.CylinderGeometry args={[saberRadius, saberRadius, saberLength]} />
-    <T.MeshPhongMaterial color='red' />
+    <T.MeshStandardMaterial roughness={0} color='red' />
   </T.Mesh>
   <T.Mesh
     slot='right'
