@@ -20,7 +20,8 @@ display info about your WebXR session. This is aliased by `ARButton` and
 <script lang='ts'>
 
 import { createEventDispatcher } from 'svelte'
-import { toggleSession, getSupportState } from '$lib/utils'
+import { getXRSupportState } from '$lib/lib/get-xr-support-state'
+import { toggleXRSession } from '$lib/lib/toggle-xr-session'
 import { session, initialized } from '$lib/stores'
 
 /** The type of `XRSession` to create */
@@ -54,7 +55,7 @@ const handleButtonClick = async (state: 'unsupported' | 'insecure' | 'blocked' |
   if (state !== 'supported') return
 
   try {
-    await toggleSession(mode, sessionInit, force)
+    await toggleXRSession(mode, sessionInit, force)
   } catch (error) {
     /** This callback gets fired if XR initialization fails. */
     dispatch('error', error as Error)
@@ -69,7 +70,7 @@ $: modeText = {
 
 </script>
 
-{#await getSupportState(mode) then state}
+{#await getXRSupportState(mode) then state}
   <button {...$$restProps} on:click={() => handleButtonClick(state)}>
     {#if state === 'unsupported'}
       {modeText} unsupported

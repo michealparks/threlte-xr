@@ -29,8 +29,6 @@ export const useTeleport = () => {
   
     if (baseReferenceSpace === null) return
 
-    const frame = xr.getFrame()
-
     let x = 0, y = 0, z = 0
 
     if (Array.isArray(position)) {
@@ -45,7 +43,7 @@ export const useTeleport = () => {
     offset.y = -y
     offset.z = -z
 
-    const pose = frame?.getViewerPose(baseReferenceSpace)
+    const pose = xr.getFrame().getViewerPose(baseReferenceSpace)
     if (pose !== undefined) {
       offset.x += pose.transform.position.x
       offset.z += pose.transform.position.z

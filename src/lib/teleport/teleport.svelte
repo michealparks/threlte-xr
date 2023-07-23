@@ -25,7 +25,7 @@ import { onMount, afterUpdate } from 'svelte'
 import { T, useFrame, createRawEventDispatcher } from '@threlte/core'
 import { activeTeleportController, pendingTeleportDestination } from '$lib/stores'
 import { useTeleport, useXrController, useXrGamepad } from '$lib/hooks'
-import Ray from '$lib/ray.svelte'
+import Ray from '$lib/components/ray.svelte'
 import Marker from './marker.svelte'
 
 /**

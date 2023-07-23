@@ -1,3 +1,10 @@
+<!--
+@component
+`<Controllers />` represents a THREE.XRTargetRaySpace, a THREE.XRGripSpace, and a controller model per each hand.
+
+It can optionally accept children in `left` and `right` slots, which will be parented to the controller of the respective handedness.
+-->
+
 <script lang='ts'>
 
 import { createRawEventDispatcher } from '@threlte/core'

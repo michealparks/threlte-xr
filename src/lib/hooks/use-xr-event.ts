@@ -8,12 +8,7 @@ import type {
 } from '$lib/types'
 
 /**
- * Handles controller events that are not bound to any object in the scene.
- * This subscribes directly into the native XRInputSource (see XRInputSourceEvent).
- *
- * @param event 
- * @param handler 
- * @param options 
+ * Adds listeners for controller events.
  */
 export const useXRControllerEvent = (
   event: XRControllerEventType,
@@ -35,11 +30,6 @@ export const useXRControllerEvent = (
 
 /**
  * Adds listeners for hand events.
- * This subscribes directly into the native XRInputSource (see XRInputSourceEvent).
- *
- * @param event 
- * @param handler 
- * @param options 
  */
 export const useXRHandEvent = (
   event: XRHandEventType,
@@ -47,7 +37,6 @@ export const useXRHandEvent = (
   { handedness }: { handedness?: 'left' | 'right' } = {}
 ): void => {
   const listener = (event: XRHandEvent<XRHandEventType, null | THREE.XRHandSpace>) => {
-    console.log('kewl', event)
     if (handedness !== undefined && event.handedness !== handedness) {
       return
     }

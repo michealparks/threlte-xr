@@ -21,7 +21,7 @@ and interaction. This should be placed within a Threlte `<Canvas />`.
 import { onDestroy } from 'svelte';
 import { T, useThrelte, createRawEventDispatcher, useFrame } from '@threlte/core'
 import type { XRSessionEvent } from './types'
-import { session, referenceSpaceType, player, isPresenting, isHandTracking, xrFrame, initialized } from './stores'
+import { session, referenceSpaceType, isPresenting, isHandTracking, xrFrame, initialized, player } from './stores'
 
 /**
  * Enables foveated rendering. `Default is `0`
@@ -89,14 +89,6 @@ const handleFramerateChange = (event: globalThis.XRSessionEvent) => {
   dispatch('visibilitychange', { ...event, target: $session! })
 }
 
-const cleanupSession = (session?: XRSession) => {
-  if (session === undefined) return
-
-  session.removeEventListener('visibilitychange', handleVisibilityChange)
-  session.removeEventListener('inputsourceschange', handleInputSourcesChange)
-  session.removeEventListener('frameratechange', handleFramerateChange)
-}
-
 const updateTargetFrameRate = (frameRate?: number) => {
   if (frameRate === undefined) return
 
@@ -105,14 +97,22 @@ const updateTargetFrameRate = (frameRate?: number) => {
   } catch {}
 }
 
-const updateSession = async (session?: XRSession) => {
-  if (session === undefined) return
+const cleanupSession = (currentSession?: XRSession) => {
+  if (currentSession === undefined) return
 
-  session.addEventListener('visibilitychange', handleVisibilityChange)
-  session.addEventListener('inputsourceschange', handleInputSourcesChange)
-  session.addEventListener('frameratechange', handleFramerateChange)
+  currentSession.removeEventListener('visibilitychange', handleVisibilityChange)
+  currentSession.removeEventListener('inputsourceschange', handleInputSourcesChange)
+  currentSession.removeEventListener('frameratechange', handleFramerateChange)
+}
 
-  await xr.setSession(session)
+const updateSession = async (currentSession?: XRSession) => {
+  if (currentSession === undefined) return
+
+  currentSession.addEventListener('visibilitychange', handleVisibilityChange)
+  currentSession.addEventListener('inputsourceschange', handleInputSourcesChange)
+  currentSession.addEventListener('frameratechange', handleFramerateChange)
+
+  await xr.setSession(currentSession)
 
   xr.setFoveation(foveation)
   
@@ -133,13 +133,14 @@ $: updateSession($session)
 $: updateTargetFrameRate(frameRate)
 $: xr.setFoveation(foveation)
 
+$initialized = true
+
 onDestroy(() => {
+  $initialized = false
   xr.enabled = false
   xr.removeEventListener('sessionstart', handleSessionStart)
   xr.removeEventListener('sessionend', handleSessionEnd)
 })
-
-$initialized = true
 
 </script>
 

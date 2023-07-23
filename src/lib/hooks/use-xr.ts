@@ -1,3 +1,4 @@
+import type { CurrentWritable } from '@threlte/core'
 import {
   isPresenting,
   isHandTracking,
@@ -15,6 +16,12 @@ const stores = {
 }
 
 /**
- * This hook gives you access to the current state configured by `<XR />`.
+ * Provides access to context related to `<XR />`.
  */
-export const useXR = () => stores
+export const useXR = (): {
+  isPresenting: CurrentWritable<boolean>
+  isHandTracking: CurrentWritable<boolean>
+  player: CurrentWritable<THREE.Group>
+  session: CurrentWritable<XRSession | undefined>
+  xrFrame: CurrentWritable<XRFrame | undefined>
+} => stores

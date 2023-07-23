@@ -6,8 +6,6 @@ import { useThrelte, useFrame } from '@threlte/core'
 
 /**
  * Use this hook to perform a hit test for an AR environment.
- *
- * @param hitTestCallback 
  */
 export const useHitTest = (hitTestCallback: HitTestCallback): void => {
   const { renderer } = useThrelte()

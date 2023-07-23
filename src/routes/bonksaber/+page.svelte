@@ -17,4 +17,3 @@ import Scene from './scene.svelte'
 </Canvas>
 
 <VRButton />
-  

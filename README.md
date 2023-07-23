@@ -291,13 +291,13 @@ useFrame(() => {
 
 ### Custom XRButton
 
-While you can customize <XRButton>, you can also create your own. For this there's a low-level utility available of a headless xr button: `toggleSession`.
+While you can customize <XRButton>, you can also create your own. For this there's a low-level utility available of a headless xr button: `toggleXRSession`.
 
 ```ts
-import { toggleSession } from 'threlte-xr'
+import { toggleXRSession } from 'threlte-xr'
 
 const handleClick = async () => {
-  const session = await toggleSession('immersive-vr')
+  const session = await toggleXRSession('immersive-vr')
   if (session) {
     button.innerText = 'Exit VR'
   } else {
