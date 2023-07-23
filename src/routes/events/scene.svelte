@@ -9,7 +9,19 @@ useXRControllerEvent('select', (event) => console.log('useXRControllerEvent', ev
   handedness: 'right'
 })
 
+useXRControllerEvent('squeeze', (event) => console.log('useXRControllerEvent', event), {
+  handedness: 'right'
+})
+
+useXRHandEvent('connected', (event) => console.log('useXRHandEvent', event), {
+  handedness: 'left'
+})
+
 useXRHandEvent('pinchstart', (event) => console.log('useXRHandEvent', event), {
+  handedness: 'left'
+})
+
+useXRHandEvent('pinchend', (event) => console.log('useXRHandEvent', event), {
   handedness: 'left'
 })
 
@@ -38,8 +50,7 @@ camera.current.lookAt(0, 1.75, 1)
   <Hands
     on:connected={(event) => console.log('connected:controller', event)}
     on:disconnected={(event) => console.log('disconnected:controller', event)}
-    on:pinchstart={(event) => console.log('pinchstart', event)}
-    on:pinchend={(event) => console.log('pinchend', event)}
+
   />
 </XR>
 

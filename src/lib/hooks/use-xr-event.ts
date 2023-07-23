@@ -47,7 +47,8 @@ export const useXRHandEvent = (
   { handedness }: { handedness?: 'left' | 'right' } = {}
 ): void => {
   const listener = (event: XRHandEvent<XRHandEventType, null | THREE.XRHandSpace>) => {
-    if (handedness !== undefined && event.data?.handedness !== handedness) {
+    console.log('kewl', event)
+    if (handedness !== undefined && event.handedness !== handedness) {
       return
     }
 

@@ -36,14 +36,15 @@ const setHandedness = (index: number, event: XRControllerEvent<'connected'>) => 
 $: models = {
   left: modelLeft,
   right: modelRight,
-  none: 'none'
-}
+  none: 'none',
+  default: undefined,
+} as const
 
 </script>
 
 {#each [0, 1] as index (index)}
   <Controller
-    model={models[handedness[index] ?? 'none']}
+    model={models[handedness[index] ?? 'default']}
     {index}
     on:connected={(event) => {
       setHandedness(index, event)
