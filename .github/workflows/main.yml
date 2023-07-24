@@ -23,9 +23,18 @@ jobs:
       - name: Install and Build 🔧
         run: |
           npm ci --audit=false --legacy-peer-deps
-          npm run build
+          npm run build -- --base=/threlte-xr/
 
       - name: Publish 🚀
         uses: JS-DevTools/npm-publish@v2.1
         with:
           token: ${{ secrets.NPM_TOKEN }}
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          BRANCH: gh-pages
+          FOLDER: build
+          CLEAN: true
+          clean-exclude: |
+            .nojekyll

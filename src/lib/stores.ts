@@ -1,4 +1,3 @@
-import * as THREE from 'three'
 import { writable } from 'svelte/store'
 import { currentWritable } from '@threlte/core'
 
