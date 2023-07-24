@@ -1,5 +1,6 @@
 <script lang='ts'>
 
+import { base } from '$app/paths'
 import Inspector from 'three-inspect'
 import { T, useThrelte } from '@threlte/core'
 import { useGltf } from '@threlte/extras'
@@ -11,7 +12,7 @@ const { scene, camera, renderer } = useThrelte()
 camera.current.position.z = 1.75
 camera.current.lookAt(0, 1.75, 1)
 
-const viveController = useGltf('./htc_vive_controller.glb')
+const viveController = useGltf(`${base}/htc_vive_controller.glb`)
 
 if (localStorage.getItem('debug')) {
   new Inspector({

@@ -7,6 +7,9 @@ const config = {
 	// for more information about preprocessors
 	preprocess: vitePreprocess(),
 	kit: {
+		paths: {
+			base: '/threlte-xr',
+		},
 		prerender: {
 			handleHttpError: 'warn',
 		},
