@@ -3,7 +3,7 @@
 import '../app.css'
 
 const links = [
-  ['threlte-xr', '/'],
+  ['threlte-xr', './'],
   ['github', 'https://github.com/michealparks/threlte-xr']
 ] as const
 

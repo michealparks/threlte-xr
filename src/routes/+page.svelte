@@ -3,12 +3,13 @@
 import { base } from '$app/paths'
 
 const demos = [
-  ['Hands', 'hands'],
   ['Events', 'events'],
   ['Custom controller models', 'models'],
+  ['Hands', 'hands'],
   ['Teleporting', 'teleport'],
   ['Immersive AR', 'ar'],
   ['BonkSaber', 'bonksaber'],
+  ['Hand Physics', 'hand-physics'],
 ] as const
 
 </script>
