@@ -19,9 +19,9 @@ and interaction. This should be placed within a Threlte `<Canvas />`.
 <script lang='ts'>
 
 import { onDestroy } from 'svelte';
-import { T, useThrelte, createRawEventDispatcher, useFrame } from '@threlte/core'
+import { useThrelte, createRawEventDispatcher, useFrame } from '@threlte/core'
 import type { XRSessionEvent } from './types'
-import { session, referenceSpaceType, isPresenting, isHandTracking, xrFrame, initialized, player } from './stores'
+import { session, referenceSpaceType, isPresenting, isHandTracking, xrFrame, initialized } from './stores'
 
 /**
  * Enables foveated rendering. `Default is `0`
@@ -55,9 +55,7 @@ type $$Events = {
 }
 
 const dispatch = createRawEventDispatcher<$$Events>()
-
-const { renderer, camera } = useThrelte()
-const { xr } = renderer!
+const { xr } = useThrelte().renderer!
 
 const { start, stop } = useFrame(() => {
   xrFrame.set(xr.getFrame())

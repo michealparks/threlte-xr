@@ -45,10 +45,7 @@ type $$Events = {
 }
 
 const dispatch = createRawEventDispatcher<$$Events>()
-
-const { renderer } = useThrelte()
-const { xr } = renderer!
-
+const { xr } =  useThrelte().renderer!
 const controller = xr.getController(index)
 const grip = xr.getControllerGrip(index)
 

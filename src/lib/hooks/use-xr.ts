@@ -2,7 +2,6 @@ import type { CurrentWritable } from '@threlte/core'
 import {
   isPresenting,
   isHandTracking,
-  player,
   session,
   xrFrame,
 } from '$lib/stores'
@@ -10,7 +9,6 @@ import {
 const stores = {
   isPresenting,
   isHandTracking,
-  player,
   session,
   xrFrame,
 }
@@ -21,7 +19,6 @@ const stores = {
 export const useXR = (): {
   isPresenting: CurrentWritable<boolean>
   isHandTracking: CurrentWritable<boolean>
-  player: CurrentWritable<THREE.Group>
   session: CurrentWritable<XRSession | undefined>
   xrFrame: CurrentWritable<XRFrame | undefined>
 } => stores

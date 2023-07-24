@@ -18,7 +18,6 @@ const dispatch = createRawEventDispatcher<$$Events>()
 const handedness: ['left' | 'right', 'left' | 'right'] = [undefined!, undefined!]
 
 const setHandedness = (index: number, event: XRHandEvent<'connected', null>) => {
-  console.log(event)
   if (event.data) {
     handedness[index] = event.data.handedness as 'left' | 'right'
   }
