@@ -72,7 +72,8 @@ const { start, stop } = useFrame(() => {
 
   const pose = frame.getJointPose?.(joint, space)
 
-  if (pose === undefined) return
+  // This isn't correctly typed by @types/xr. Pose can also be null.
+  if (pose === undefined || pose === null) return
 
   const { position, orientation } = pose.transform
   children.position.set(position.x, position.y, position.z)

@@ -144,10 +144,6 @@ onDestroy(() => {
 
 </script>
 
-<T name='Player' is={$player}>
-  <T is={camera.current} />
-</T>
-
 {#if $isPresenting}
   <slot />
 {/if}
