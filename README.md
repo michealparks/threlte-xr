@@ -242,6 +242,12 @@ Hand events are also supported with the `useXRHandEvent`.
 useXRHandEvent('pinchstart', (event: XRHandEvent) => {})
 ```
 
+Additionally, individual hand joint data can be retrieved with the `useXRHandJoint` hook. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/XRHand) for a list of all available joints.
+
+```ts
+const jointSpace = useXRHandJoint('left', 'wrist')
+```
+
 ## Movement
 
 ### TeleportControls

@@ -25,3 +25,5 @@ export const handJoints = [
   'pinky-finger-phalanx-distal',
   'pinky-finger-tip'
 ] as const
+
+export type HandJoints = typeof handJoints[number]
