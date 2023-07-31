@@ -12,6 +12,18 @@ Svelte components and hooks for creating VR/AR applications with [threlte (v6)](
 npm install threlte-xr
 ```
 
+## Examples
+
+<div style='display:flex; gap: 1rem;'>
+<a target='_tab' href='https://michealparks.github.io/threlte-xr/bonksaber'>
+  <img width='250' src='https://raw.githubusercontent.com/michealparks/threlte-xr/main/static/example-1.gif'>
+</a>
+
+<a target='_tab' href=''>
+  <img width='250' src='https://raw.githubusercontent.com/michealparks/threlte-xr/main/static/example-2.gif'>
+</a>
+</div>
+
 ## Roadmap
 
 - [x] XR Manager
