@@ -24,20 +24,6 @@ npm install threlte-xr
 </a>
 </div>
 
-## Roadmap
-
-- [x] XR Manager
-- [x] Controller and Hand features
-  - [x] Events
-  - [ ] Custom hand models
-  - [x] Hand children
-- [x] Teleporting
-  - [x] Hook
-  - [x] TeleportControls
-- [ ] Smooth movement
-- [ ] Interactive objects
-- [ ] Works smoothly with @threlte/rapier
-
 ## Getting started
 
 The following adds a button to start your session and controllers inside an XR manager to prepare your scene for WebXR rendering and interaction.
