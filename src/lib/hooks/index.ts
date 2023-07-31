@@ -20,7 +20,7 @@ export const useXrController = (handedness: XRHandedness) => {
 /**
  * @deprecated useXRGamepad is deprecated, use useGamepad.
  */
-export const useXRGamepad = (handedness: 'left' | 'right') => {
+export const useXrGamepad = (handedness: 'left' | 'right') => {
   console.warn('useXRGamepad is deprecated, use useGamepad.')
   return useGamepad(handedness)
 }

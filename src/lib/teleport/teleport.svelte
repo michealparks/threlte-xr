@@ -24,7 +24,7 @@ import * as THREE from 'three'
 import { onMount, afterUpdate } from 'svelte'
 import { T, useFrame, createRawEventDispatcher } from '@threlte/core'
 import { activeTeleportController, pendingTeleportDestination } from '$lib/stores'
-import { useTeleport, useXrController, useXrGamepad } from '$lib/hooks'
+import { useTeleport, useController, useGamepad } from '$lib/hooks'
 import Ray from '$lib/components/ray.svelte'
 import Marker from './marker.svelte'
 
@@ -66,8 +66,8 @@ const curve = new THREE.QuadraticBezierCurve3()
 const curvePoint = new THREE.Vector3()
 
 $: raycaster.far = maxDistance
-$: teleportController = useXrController(handedness)
-$: teleportGamepad = useXrGamepad(handedness)
+$: teleportController = useController(handedness)
+$: teleportGamepad = useGamepad(handedness)
 
 const calculateRayMidpoint = (vector1: THREE.Vector3, vector2: THREE.Vector3) => {
   rayMidpoint.x = (vector1.x + vector2.x) / 2;
