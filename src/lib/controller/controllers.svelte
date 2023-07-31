@@ -11,8 +11,8 @@ import { createRawEventDispatcher } from '@threlte/core'
 import Controller from './controller.svelte'
 import type { XRControllerEvent } from '../types'
 
-export let modelLeft: THREE.Object3D | undefined = undefined
-export let modelRight: THREE.Object3D | undefined = undefined
+export let modelLeft: THREE.Object3D | 'none' | undefined = undefined
+export let modelRight: THREE.Object3D | 'none' | undefined = undefined
 
 type $$Events = {
   connected: XRControllerEvent<'connected'>
