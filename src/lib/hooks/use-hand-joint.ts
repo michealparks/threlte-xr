@@ -28,7 +28,7 @@ const onHandReady = (handedness: 'left' | 'right', joint: HandJoints, callback: 
 /**
  * Provides a reference to a requested hand joint, once available.
  */
-export const useXRHandJoint = (handedness: 'left' | 'right', joint: HandJoints) => {
+export const useHandJoint = (handedness: 'left' | 'right', joint: HandJoints) => {
   const jointSpace = currentWritable<THREE.XRJointSpace | undefined>(undefined)
 
   const unsub = onHandReady(handedness, joint, (joint) => jointSpace.set(joint))

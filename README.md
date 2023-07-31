@@ -190,40 +190,40 @@ Controllers can be added with `<Controllers />` for [motion-controllers](https:/
 </Controllers>
 ```
 
-### useXrController
+### useController
 
-`useXrController` returns a `currentWritable` of an `XRController` by handedness, exposing position and orientation info.
+`useController` returns a `currentWritable` of an `XRController` by handedness, exposing position and orientation info.
 
 ```ts
-const leftController = useXrController('left')
-const rightController = useXrController('right')
-const gazeController = useXrController('none')
+const leftController = useController('left')
+const rightController = useController('right')
+const gazeController = useController('none')
 
 console.log(leftController.current)
 ```
 
-### useXrGamepad
+### useGamepad
 
-`useXrGamepad` is a convenience hook that returns a `currentWritable` to easily reference an `XRController`'s gamepad.
+`useGamepad` is a convenience hook that returns a `currentWritable` to easily reference an `XRController`'s gamepad.
 
 ```ts
-// Instead of...
-const leftController = useXrController('left')
+// Instead of this...
+const leftController = useController('left')
 $: gamepad = leftController?.inputSource.gamepad
 
-// Do this...
-const leftController = useXrController('left')
-const leftGamepad = useXrGamepad('left')
+// You can do this...
+const leftController = useController('left')
+const leftGamepad = useGamepad('left')
 
 console.log(leftGamepad.current)
 ```
 
-### useXREvent
+### useControllerEvent / useHandEvent
 
-To handle controller events that are not bound to any object in the scene you can use `useXRControllerEvent` hook. This is a low-level abstraction that subscribes directly into the native XRInputSource (see [`XRInputSourceEvent`](https://developer.mozilla.org/en-US/docs/Web/API/XRInputSourceEvent#event_types)).
+To handle controller events that are not bound to any object in the scene you can use `useControllerEvent` hook. This is a low-level abstraction that subscribes directly into the native XRInputSource (see [`XRInputSourceEvent`](https://developer.mozilla.org/en-US/docs/Web/API/XRInputSourceEvent#event_types)).
 
 ```ts
-useXRControllerEvent('squeeze', (event: XRControllerEvent) => {})
+useControllerEvent('squeeze', (event: XRControllerEvent) => {})
 ```
 
 It supports an optional third parameter with options for filtering by handedness or input.
@@ -231,21 +231,21 @@ It supports an optional third parameter with options for filtering by handedness
 By default, no filtering occurs.
 
 ```ts
-useXRControllerEvent('squeeze', (event: XRControllerEvent) => {}, {
+useControllerEvent('squeeze', (event: XRControllerEvent) => {}, {
   handedness: 'left' | 'right' | 'none',
 })
 ```
 
-Hand events are also supported with the `useXRHandEvent`.
+Hand events are also supported with the `useHandEvent`.
 
 ```ts
-useXRHandEvent('pinchstart', (event: XRHandEvent) => {})
+useHandEvent('pinchstart', (event: XRHandEvent) => {})
 ```
 
-Additionally, individual hand joint data can be retrieved with the `useXRHandJoint` hook. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/XRHand) for a list of all available joints.
+Additionally, individual hand joint data can be retrieved with the `useHandJoint` hook. See [MDN](https://developer.mozilla.org/en-US/docs/Web/API/XRHand) for a list of all available joints.
 
 ```ts
-const jointSpace = useXRHandJoint('left', 'wrist')
+const jointSpace = useHandJoint('left', 'wrist')
 ```
 
 ## Movement

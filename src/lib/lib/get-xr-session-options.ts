@@ -1,22 +1,22 @@
 
 export const getXRSessionOptions = (
-  globalStateReferenceSpaceType: XRReferenceSpaceType | undefined,
+  referenceSpaceType: XRReferenceSpaceType | undefined,
   sessionInit: XRSessionInit | undefined
 ): XRSessionInit | undefined => {
-  if (!globalStateReferenceSpaceType && !sessionInit) {
+  if (referenceSpaceType === undefined && sessionInit === undefined) {
     return undefined
   }
 
-  if (globalStateReferenceSpaceType && !sessionInit) {
-    return { optionalFeatures: [globalStateReferenceSpaceType] }
+  if (referenceSpaceType && sessionInit === undefined) {
+    return { optionalFeatures: [referenceSpaceType] }
   }
 
-  if (globalStateReferenceSpaceType && sessionInit) {
+  if (referenceSpaceType && sessionInit) {
     return {
       ...sessionInit,
       optionalFeatures: [
         ...new Set([...(sessionInit.optionalFeatures ?? []),
-        globalStateReferenceSpaceType])
+        referenceSpaceType])
       ]
     }
   }

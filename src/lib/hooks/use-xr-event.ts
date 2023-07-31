@@ -10,7 +10,7 @@ import type {
 /**
  * Adds listeners for controller events.
  */
-export const useXRControllerEvent = (
+export const useControllerEvent = (
   event: XRControllerEventType,
   handler: (event: XRControllerEvent) => void,
   { handedness }: { handedness?: XRHandedness } = {}
@@ -31,7 +31,7 @@ export const useXRControllerEvent = (
 /**
  * Adds listeners for hand events.
  */
-export const useXRHandEvent = (
+export const useHandEvent = (
   event: XRHandEventType,
   handler: (event: XRHandEvent<XRHandEventType, null | THREE.XRHandSpace>) => void,
   { handedness }: { handedness?: 'left' | 'right' } = {}

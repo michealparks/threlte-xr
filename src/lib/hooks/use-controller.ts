@@ -14,7 +14,7 @@ right.subscribe((value) => gamepadRight.set(value?.inputSource.gamepad))
 /**
  * Provides a reference to a current XRController, filtered by handedness.
  */
-export const useXrController = (handedness: XRHandedness): CurrentWritable<XRController | undefined> => {
+export const useController = (handedness: XRHandedness): CurrentWritable<XRController | undefined> => {
   switch (handedness) {
     case 'left': return left
     case 'right': return right
@@ -25,9 +25,10 @@ export const useXrController = (handedness: XRHandedness): CurrentWritable<XRCon
 /**
  * Provides a reference to the gamepad attadched to a current XRController.
  */
-export const useXrGamepad = (handedness: 'left' | 'right'): CurrentWritable<Gamepad | undefined> => {
+export const useGamepad = (handedness: 'left' | 'right'): CurrentWritable<Gamepad | undefined> => {
   switch (handedness) {
     case 'left': return gamepadLeft
     case 'right': return gamepadRight
   }
 }
+ 

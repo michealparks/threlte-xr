@@ -12,7 +12,7 @@ import { XRControllerModelFactory } from 'three/examples/jsm/webxr/XRControllerM
 import { fire } from '$lib/events'
 import type { XRController, XRControllerEvent } from '$lib/types'
 import { isHandTracking, activeTeleportController, pendingTeleportDestination } from '$lib/stores'
-import { left, right, gaze } from '$lib/hooks/use-xr-controller'
+import { left, right, gaze } from '$lib/hooks/use-controller'
 import ShortRay from '$lib/components/ray-short.svelte'
 
 const controllerModelFactory = new XRControllerModelFactory()
