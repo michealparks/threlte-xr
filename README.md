@@ -19,7 +19,7 @@ npm install threlte-xr
   <img width='250' src='https://raw.githubusercontent.com/michealparks/threlte-xr/main/static/example-1.gif'>
 </a>
 
-<a target='_tab' href=''>
+<a target='_tab' href='https://michealparks.github.io/threlte-xr/hand-physics'>
   <img width='250' src='https://raw.githubusercontent.com/michealparks/threlte-xr/main/static/example-2.gif'>
 </a>
 </div>
