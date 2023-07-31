@@ -4,6 +4,7 @@ import { Canvas } from '@threlte/core'
 import { VRButton } from '$lib'
 import { World, Debug } from '@threlte/rapier'
 import Scene from './scene.svelte'
+import CodeLink from '../components/code-link.svelte'
 
 </script>
 
@@ -15,5 +16,7 @@ import Scene from './scene.svelte'
     <Scene />
   </World>
 </Canvas>
+
+<CodeLink href='https://github.com/michealparks/threlte-xr/tree/main/src/routes/hand-physics' />
 
 <VRButton />
