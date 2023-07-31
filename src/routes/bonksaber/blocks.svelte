@@ -45,10 +45,8 @@ const speed = 12
 const particleSize = boxSize / 4
 const particleRadius = boxRadius / 4
 
-const handleContact = (index: number, event: any) => {
-  return
+const handleContact = (event: any) => {
   console.log('contact')
-  visible[index] = false
 
   const rb = event.targetRigidBody as RapierRigidBody
   const force = event.maxForceDirection as THREE.Vector3
@@ -63,11 +61,12 @@ const handleContact = (index: number, event: any) => {
   console.log('group', particleGroup)
 }
 
-const getRandomForce = (force) => {
+const getRandomForce = (force: THREE.Vector3): [number, number, number] => {
   const x = Math.random() - 0.5
   const y = Math.random() - 0.5
   const z = Math.random() - 0.5
-  return [force.x * x * 10, force.y * y * 10, force.z * z * 10] as [number, number, number]
+  const scale = 0.1
+  return [force.x * x * scale, force.y * y * scale, force.z * z * scale]
 }
 
 </script>
@@ -85,7 +84,7 @@ const getRandomForce = (force) => {
       <RigidBody
         enabled={visible[index] ?? true}
         linearVelocity={[0, 0, speed]}
-        on:contact={(event) => handleContact(index, event)}
+        on:contact={handleContact}
       >
         <Collider shape='cuboid' mass={0.5} args={[boxSize / 2, boxSize / 2, boxSize / 2]} />
         {#if visible[index]}
