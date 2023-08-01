@@ -10,3 +10,5 @@ export const session = currentWritable<XRSession | undefined>(undefined)
 export const referenceSpaceType = currentWritable<XRReferenceSpaceType | undefined>(undefined)
 export const activeTeleportController = currentWritable<THREE.XRTargetRaySpace | undefined>(undefined)
 export const pendingTeleportDestination = currentWritable<THREE.Vector3 | undefined>(undefined)
+
+export const xr = currentWritable<THREE.WebXRManager | undefined>(undefined)

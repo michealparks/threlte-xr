@@ -1,5 +1,4 @@
-import { session, referenceSpaceType } from '$lib/stores'
-import { get } from 'svelte/store'
+import { session, referenceSpaceType, xr } from '$lib/stores'
 import { getXRSessionOptions } from './get-xr-session-options'
 
 /**
@@ -15,7 +14,7 @@ export const toggleXRSession = async (
   sessionInit?: (XRSessionInit & { domOverlay?: { root: HTMLElement } | undefined }) | undefined,
   force?: 'enter' | 'exit'
 ): Promise<XRSession | undefined> => {
-  const currentSession = get(session)
+  const currentSession = session.current
   const hasSession = currentSession !== undefined
 
   if (force === 'enter' && hasSession) return currentSession
@@ -29,8 +28,15 @@ export const toggleXRSession = async (
   }
 
   // Otherwise enter a session
-  const options = getXRSessionOptions(get(referenceSpaceType), sessionInit)
+  const options = getXRSessionOptions(referenceSpaceType.current, sessionInit)
   const nextSession = await navigator.xr!.requestSession(sessionMode, options)
+
+  if (xr.current === undefined) {
+    throw new Error('An <XR> component was not created when attempting to toggle a session.')
+  }
+
+  await xr.current.setSession(nextSession)
+
   session.set(nextSession)
   return nextSession
 }
