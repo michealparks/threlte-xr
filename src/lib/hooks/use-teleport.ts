@@ -50,7 +50,6 @@ export const useTeleport = () => {
     offset.y = -y
     offset.z = -z
 
-    
     const pose = xr.getFrame().getViewerPose(baseReferenceSpace)
     if (pose !== undefined) {
       offset.x += pose.transform.position.x
