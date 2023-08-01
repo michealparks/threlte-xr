@@ -21,7 +21,7 @@ and interaction. This should be placed within a Threlte `<Canvas />`.
 import { onDestroy } from 'svelte';
 import { useThrelte, createRawEventDispatcher, useFrame } from '@threlte/core'
 import type { XRSessionEvent } from './types'
-import { session, referenceSpaceType, isPresenting, isHandTracking, xrFrame, initialized } from './stores'
+import { session, referenceSpaceType, isPresenting, isHandTracking, xrFrame, initialized, xr as xrStore } from './stores'
 
 /**
  * Enables foveated rendering. `Default is `0`
@@ -110,8 +110,6 @@ const updateSession = async (currentSession?: XRSession) => {
   currentSession.addEventListener('inputsourceschange', handleInputSourcesChange)
   currentSession.addEventListener('frameratechange', handleFramerateChange)
 
-  await xr.setSession(currentSession)
-
   xr.setFoveation(foveation)
   
   updateTargetFrameRate(frameRate)
@@ -126,11 +124,18 @@ $: {
   $referenceSpaceType = referenceSpace
 }
 
-$: cleanupSession($session)
-$: updateSession($session)
+let lastSession: XRSession | undefined
+
+$: if (lastSession !== $session) {
+  cleanupSession(lastSession)
+  updateSession($session)
+  lastSession = $session
+}
+
 $: updateTargetFrameRate(frameRate)
 $: xr.setFoveation(foveation)
 
+$xrStore = xr
 $initialized = true
 
 onDestroy(() => {
