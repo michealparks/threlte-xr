@@ -26,7 +26,7 @@ type $$Events = {
 }
 
 const dispatch = createRawEventDispatcher<$$Events>()
-const { xr } = useThrelte().renderer!
+const { xr } = useThrelte().renderer
 const hand = xr.getHand(index)
 const space = xr.getReferenceSpace()
 const model = handModelFactory.createHandModel(hand, profile === 'none' ? 'mesh' : profile)

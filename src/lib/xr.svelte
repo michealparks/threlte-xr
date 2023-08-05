@@ -55,7 +55,7 @@ type $$Events = {
 }
 
 const dispatch = createRawEventDispatcher<$$Events>()
-const { xr } = useThrelte().renderer!
+const { xr } = useThrelte().renderer
 
 const { start, stop } = useFrame(() => {
   xrFrame.set(xr.getFrame())

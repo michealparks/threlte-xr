@@ -159,7 +159,7 @@ onMount(() => {
 
 <Ray
   visible={activeController !== undefined && destination !== undefined}
-  {positions}
+  positions={activeController !== undefined && destination !== undefined ? positions : undefined}
 />
 
 <Marker

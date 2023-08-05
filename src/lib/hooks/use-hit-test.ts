@@ -8,7 +8,7 @@ import { useThrelte, useFrame } from '@threlte/core'
  * Use this hook to perform a hit test for an AR environment.
  */
 export const useHitTest = (hitTestCallback: HitTestCallback): void => {
-  const { xr } = useThrelte().renderer!
+  const { xr } = useThrelte().renderer
   const hitMatrix = new THREE.Matrix4()
 
   let hitTestSource: XRHitTestSource | undefined

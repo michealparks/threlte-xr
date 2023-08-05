@@ -18,7 +18,7 @@ const offset = { x: 0, y: 0, z: 0 }
  * teleport(vec3)
  */
 export const useTeleport = () => {
-  const { xr } = useThrelte().renderer!
+  const { xr } = useThrelte().renderer
   
   let baseReferenceSpace: XRReferenceSpace | null | undefined
 

@@ -3,7 +3,7 @@ import { writable } from 'svelte/store'
 import { useThrelte } from '@threlte/core'
 
 export const useHandsReady = () => {
-  const { xr } = useThrelte().renderer!
+  const { xr } = useThrelte().renderer
 
   let joint = xr.getHand(0).joints['index-finger-tip']
 
