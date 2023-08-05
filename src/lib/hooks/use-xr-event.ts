@@ -1,5 +1,5 @@
 import { onDestroy } from 'svelte'
-import { on, off } from '$lib/events'
+import { on, off } from '$lib/internal/events'
 import type {
   XRControllerEventType,
   XRHandEventType,

@@ -23,7 +23,7 @@ const pointOnCircle = (radius: number, theta: number) => {
 }
 
 const randomColor = () => {
-  const colors = colorOptions[Math.trunc(Math.random() * colorOptions.length)]
+  const colors = colorOptions[Math.trunc(Math.random() * colorOptions.length)]!
   return colors[Math.trunc(Math.random() * colors.length)]
 }
 
@@ -33,8 +33,6 @@ const cylinders = Array.from({ length: 14 }).map((_, index) => {
     color: randomColor(),
   }
 })
-
-new THREE.Mesh().receiveShadow
 
 </script>
 
@@ -60,8 +58,6 @@ new THREE.Mesh().receiveShadow
     </T.Mesh>
   {/each}
 </TeleportControls>
-
-
 
 <T.AmbientLight />
 

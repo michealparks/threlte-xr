@@ -23,10 +23,9 @@
 import * as THREE from 'three'
 import { onMount, afterUpdate } from 'svelte'
 import { T, useFrame, createRawEventDispatcher } from '@threlte/core'
-import { activeTeleportController, pendingTeleportDestination } from '$lib/stores'
+import { activeTeleportController, pendingTeleportDestination } from '$lib/internal/stores'
 import { useTeleport, useController, useGamepad } from '$lib/hooks'
 import Ray from '$lib/components/ray.svelte'
-import Marker from './marker.svelte'
 
 /**
  * The raycaster used for teleportation.
@@ -162,9 +161,20 @@ onMount(() => {
   positions={activeController !== undefined && destination !== undefined ? positions : undefined}
 />
 
-<Marker
+<T.Mesh
+  name='Teleport Marker'
   visible={activeController !== undefined && destination !== undefined}
+  renderOrder={9999}
   position.x={destination?.x}
   position.y={destination?.y}
   position.z={destination?.z}
-/>
+>
+  <T.RingGeometry
+    args={[0.175, 0.2, 32]}
+    on:create={({ ref }) => ref.rotateX(-Math.PI / 2)}
+  />
+  <T.MeshBasicMaterial
+    polygonOffset
+    polygonOffsetFactor={-1}
+  />
+</T.Mesh>

@@ -4,7 +4,7 @@ import {
   isHandTracking,
   session,
   xrFrame,
-} from '$lib/stores'
+} from '$lib/internal/stores'
 
 const stores = {
   isPresenting,

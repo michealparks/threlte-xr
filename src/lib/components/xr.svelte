@@ -20,8 +20,8 @@ and interaction. This should be placed within a Threlte `<Canvas />`.
 
 import { onDestroy } from 'svelte';
 import { useThrelte, createRawEventDispatcher, useFrame } from '@threlte/core'
-import type { XRSessionEvent } from './types'
-import { session, referenceSpaceType, isPresenting, isHandTracking, xrFrame, initialized, xr as xrStore } from './stores'
+import type { XRSessionEvent } from '$lib/types'
+import { session, referenceSpaceType, isPresenting, isHandTracking, xrFrame, initialized, xr as xrStore } from '$lib/internal/stores'
 
 /**
  * Enables foveated rendering. `Default is `0`

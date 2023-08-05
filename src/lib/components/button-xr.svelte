@@ -22,7 +22,7 @@ display info about your WebXR session. This is aliased by `ARButton` and
 import { createEventDispatcher } from 'svelte'
 import { getXRSupportState } from '$lib/lib/get-xr-support-state'
 import { toggleXRSession } from '$lib/lib/toggle-xr-session'
-import { session, initialized } from '$lib/stores'
+import { session, initialized } from '$lib/internal/stores'
 
 /** The type of `XRSession` to create */
 export let mode: XRSessionMode

@@ -9,6 +9,7 @@
 		"allowJs": true,
 		"checkJs": true,
 		"verbatimModuleSyntax": true,
+    "allowSyntheticDefaultImports": true,
 
 		"skipLibCheck": true,
 		"sourceMap": true,
