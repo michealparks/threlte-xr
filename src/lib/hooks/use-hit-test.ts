@@ -11,18 +11,25 @@ export const useHitTest = (hitTestCallback: HitTestCallback): void => {
   const { xr } = useThrelte().renderer
   const hitMatrix = new THREE.Matrix4()
 
+  let started = false
   let hitTestSource: XRHitTestSource | undefined
 
   const unsub = session.subscribe(async (value) => {
     if (value === undefined) {
       hitTestSource = undefined
-      stop()
+      if (started) {
+        stop()
+        started = false
+      }
       return
     }
 
     const space = await value.requestReferenceSpace('viewer')
     hitTestSource = await value.requestHitTestSource?.({ space })
-    start()
+    if (!started) {
+      start()
+      started = true
+    }
   })
 
   const { start, stop } = useFrame(() => {

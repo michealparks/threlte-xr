@@ -22,6 +22,12 @@ const { isHandTracking } = useXR()
 
 <Cubes />
 
+<T.PerspectiveCamera
+  makeDefault
+  position={[0, 1.8, 1]}
+  on:create={({ ref }) => ref.lookAt(0, 1.8, 0)}
+/>
+
 <T.AmbientLight intensity={0.5} />
 <T.SpotLight position={[1, 8, 1]} angle={0.3} penumbra={1} intensity={1} castShadow />
 

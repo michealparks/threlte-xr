@@ -11,12 +11,10 @@ extend({ Line2, LineGeometry, LineMaterial })
 
 <script lang='ts'>
 
-export let positions: Float32Array | undefined // = new Float32Array([0, 0, 0, 0, 0, -0.3])
+export let positions: Float32Array | undefined
 export let color = 'white'
 
 let lineGeometry = new LineGeometry()
-
-console.log(positions)
 
 $: if (positions) {
   lineGeometry.setPositions(positions)

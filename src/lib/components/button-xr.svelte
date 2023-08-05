@@ -11,6 +11,7 @@ display info about your WebXR session. This is aliased by `ARButton` and
       optionalFeatures: ['local-floor', 'bounded-floor', 'hand-tracking', 'layers']
     }}
     force={'enter' | 'exit' | undefined}
+    styled={'true' | 'false'}
     on:error={(event) => {}}
     on:click={(event) => {}}
   />
@@ -35,6 +36,9 @@ export let sessionInit: XRSessionInit & { domOverlay?: { root: HTMLElement } | u
 
 /** Whether this button should only enter / exit an `XRSession`. Default is to toggle both ways */
 export let force: 'enter' | 'exit' | undefined = undefined
+
+/** Whether to apply automatic styling to the button. Set false to apply custom styles. Default is true. */
+export let styled = true
 
 type $$Events = {
   /** Fires when a user clicks the VR button. */
@@ -68,6 +72,22 @@ $: modeText = {
   inline: 'inline'
 }[mode]
 
+$: if (styled) {
+  $$restProps.style = `
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px 20px;
+    border: 1px solid white;
+    background: rgba(0, 0, 0, 0.1);
+    color: white;
+    outline: none;
+    z-index: 99999;
+    ${($$restProps.style ?? '')}
+  `
+}
+
 </script>
 
 {#await getXRSupportState(mode) then state}
@@ -83,18 +103,3 @@ $: modeText = {
     {/if}
   </button>
 {/await}
-
-<style>
-  button {
-    position: absolute;
-    bottom: 24px;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 10px 20px;
-    border: 1px solid white;
-    background: rgba(0, 0, 0, 0.1);
-    color: white;
-    outline: none;
-    z-index: 99999;
-  }
-</style>

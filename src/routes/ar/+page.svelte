@@ -10,4 +10,4 @@ import Scene from './scene.svelte'
   <Scene />
 </Canvas>
 
-<ARButton class='border-black' />
+<ARButton />
