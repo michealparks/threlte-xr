@@ -10,4 +10,6 @@ body {
   margin: 0;
   height: 100vh;
   overflow: auto;
+  background-color: #333;
+  color: #fff;
 }

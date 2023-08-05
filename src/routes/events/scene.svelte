@@ -1,27 +1,27 @@
 <script lang='ts'>
 
 import { T, useThrelte } from '@threlte/core'
-import { XR, Controllers, Hands, useXRControllerEvent, useXRHandEvent } from '$lib'
+import { XR, Controllers, Hands, useControllerEvent, useHandEvent } from '$lib'
   
 const { camera } = useThrelte()
 
-useXRControllerEvent('select', (event) => console.log('useXRControllerEvent', event), {
+useControllerEvent('select', (event) => console.log('useControllerEvent', event), {
   handedness: 'right'
 })
 
-useXRControllerEvent('squeeze', (event) => console.log('useXRControllerEvent', event), {
+useControllerEvent('squeeze', (event) => console.log('useControllerEvent', event), {
   handedness: 'right'
 })
 
-useXRHandEvent('connected', (event) => console.log('useXRHandEvent', event), {
+useHandEvent('connected', (event) => console.log('useHandEvent', event), {
   handedness: 'left'
 })
 
-useXRHandEvent('pinchstart', (event) => console.log('useXRHandEvent', event), {
+useHandEvent('pinchstart', (event) => console.log('useHandEvent', event), {
   handedness: 'left'
 })
 
-useXRHandEvent('pinchend', (event) => console.log('useXRHandEvent', event), {
+useHandEvent('pinchend', (event) => console.log('useHandEvent', event), {
   handedness: 'left'
 })
 
@@ -50,7 +50,8 @@ camera.current.lookAt(0, 1.75, 1)
   <Hands
     on:connected={(event) => console.log('connected:controller', event)}
     on:disconnected={(event) => console.log('disconnected:controller', event)}
-
+    on:pinchstart={(event) => console.log('pinchstart', event)}
+    on:pinchend={(event) => console.log('pinchend', event)}
   />
 </XR>
 

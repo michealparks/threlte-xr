@@ -9,7 +9,7 @@ const links = [
 
 </script>
 
-<nav class='bg-gray-100 p-2 flex gap-2'>
+<nav class='bg-gray-700 p-2 flex gap-2'>
   {#each links as [text, href] (href)}
     <a
       {href}

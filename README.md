@@ -294,7 +294,7 @@ useFrame(() => {
 
 ### Custom XRButton
 
-While you can customize <XRButton>, you can also create your own. For this there's a low-level utility available of a headless xr button: `toggleXRSession`.
+While you can customize `<XRButton>`, you can also create your own. For this there's a low-level utility available of a headless xr button: `toggleXRSession`.
 
 ```ts
 import { toggleXRSession } from 'threlte-xr'

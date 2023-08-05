@@ -18,7 +18,7 @@ if (localStorage.getItem('debug')) {
   new Inspector({
     scene,
     camera: camera.current as THREE.PerspectiveCamera,
-    renderer: renderer!
+    renderer
   })
 }
 

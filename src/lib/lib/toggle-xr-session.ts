@@ -1,4 +1,4 @@
-import { session, referenceSpaceType, xr } from '$lib/stores'
+import { session, referenceSpaceType, xr } from '$lib/internal/stores'
 import { getXRSessionOptions } from './get-xr-session-options'
 
 /**
