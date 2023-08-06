@@ -1,6 +1,8 @@
 <script lang='ts'>
 
+import { onMount } from 'svelte'
 import { base } from '$app/paths'
+import * as THREE from 'three'
 
 const demos = [
   ['Events', 'events'],
@@ -11,6 +13,10 @@ const demos = [
   ['BonkSaber', 'bonksaber'],
   ['Hand Physics', 'hand-physics'],
 ] as const
+
+onMount(() => {
+  window.THREE = THREE
+})
 
 </script>
 

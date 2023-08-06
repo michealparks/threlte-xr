@@ -3,14 +3,18 @@ import {
   isPresenting,
   isHandTracking,
   session,
-  xrFrame,
+  xr
 } from '$lib/internal/stores'
 
 const stores = {
   isPresenting,
   isHandTracking,
   session,
-  xrFrame,
+  xrFrame: {
+    get current() {
+      return xr.current!.getFrame()
+    },
+  },
 }
 
 /**
@@ -20,5 +24,5 @@ export const useXR = (): {
   isPresenting: CurrentWritable<boolean>
   isHandTracking: CurrentWritable<boolean>
   session: CurrentWritable<XRSession | undefined>
-  xrFrame: CurrentWritable<XRFrame | undefined>
+  xrFrame: { current: XRFrame }
 } => stores

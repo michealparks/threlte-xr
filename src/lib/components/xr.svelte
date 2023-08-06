@@ -19,9 +19,9 @@ and interaction. This should be placed within a Threlte `<Canvas />`.
 <script lang='ts'>
 
 import { onDestroy } from 'svelte';
-import { useThrelte, createRawEventDispatcher, useFrame } from '@threlte/core'
+import { useThrelte, createRawEventDispatcher } from '@threlte/core'
 import type { XRSessionEvent } from '$lib/types'
-import { session, referenceSpaceType, isPresenting, isHandTracking, xrFrame, initialized, xr as xrStore } from '$lib/internal/stores'
+import { session, referenceSpaceType, isPresenting, isHandTracking, initialized, xr as xrStore } from '$lib/internal/stores'
 
 /**
  * Enables foveated rendering. `Default is `0`
@@ -57,18 +57,12 @@ type $$Events = {
 const dispatch = createRawEventDispatcher<$$Events>()
 const { xr } = useThrelte().renderer
 
-const { start, stop } = useFrame(() => {
-  xrFrame.set(xr.getFrame())
-}, { autostart: false })
-
 const handleSessionStart = (event: XRSessionEvent<'sessionstart'>) => {
-  start()
   $isPresenting = true
   dispatch('sessionstart', { ...event, target: $session! })
 }
 
 const handleSessionEnd = (event: XRSessionEvent<'sessionend'>) => {
-  stop()
   dispatch('sessionend', { ...event, target: $session! })
   $isPresenting = false
   $session = undefined
