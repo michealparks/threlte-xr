@@ -11,7 +11,10 @@ import { createRawEventDispatcher } from '@threlte/core'
 import Controller from './controller.svelte'
 import type { XRControllerEvent } from '../types'
 
+/** An optional model for the left controller. If 'none' is passed, no controller model will render.  */
 export let modelLeft: THREE.Object3D | 'none' | undefined = undefined
+
+/** An optional model for the right controller. If 'none' is passed, no controller model will render.  */
 export let modelRight: THREE.Object3D | 'none' | undefined = undefined
 
 type $$Events = {
