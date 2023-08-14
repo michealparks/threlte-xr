@@ -1,3 +1,7 @@
+<!--
+  @component
+  Creates XRHand inputs for devices that allow hand tracking.
+-->
 <script lang='ts'>
 
 import { createRawEventDispatcher } from '@threlte/core'
